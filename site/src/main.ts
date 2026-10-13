@@ -8,7 +8,7 @@ type Node = (typeof data.nodes)[number] & { x?: number; y?: number; z?: number; 
 type Link = { source: string | Node; target: string | Node };
 type NodeObj = { node: Node; disc: Sprite; ring: Sprite; label: SpriteText };
 
-const REPO_URL = "https://github.com/dbrains-academy/ki-woerterbuch";
+const REPO_URL = "https://github.com/hieblle/ki-woerterbuch";
 const README_URL = `${REPO_URL}#`;
 
 const nodes: Node[] = data.nodes.map((n) => ({ ...n, degree: 0 }));

@@ -8,7 +8,7 @@ KI-Werkzeuge wie ChatGPT oder Microsoft 365 Copilot sind in vielen Unternehmen a
 
 Dieses Wörterbuch erklärt die Begriffe, die du im Arbeitsalltag wirklich brauchst. In einfacher Sprache, mit Beispielen aus dem Büro, ohne Technikjargon. Jeder Eintrag endet mit einem kurzen Dialog, der zeigt, wie der Begriff im Gespräch verwendet wird.
 
-Die Begriffe sind untereinander verlinkt. Wer lieber visuell lernt: Die [Graph-Ansicht](https://dbrains-academy.github.io/ki-woerterbuch/) zeigt alle Begriffe als Netz.
+Die Begriffe sind untereinander verlinkt. Wer lieber visuell lernt: Die [Graph-Ansicht](https://hieblle.github.io/ki-woerterbuch/) zeigt alle Begriffe als Netz.
 
 Begleitmaterial zu den KI-Workshops von dbrains academy. Fragen, Korrekturen und Vorschläge gern als Issue oder Pull Request.
 
