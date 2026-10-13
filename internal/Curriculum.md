@@ -14,9 +14,10 @@
 ## Kapitel 2 — Mit KI arbeiten
 
 - Prompt
-- Prompting
+- Prompt Engineering
 - Kontext
 - Kontextfenster
+- Context Engineering
 - Chat
 - Systemprompt
 - Persona

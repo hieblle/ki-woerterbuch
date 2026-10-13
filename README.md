@@ -33,12 +33,13 @@ Begleitmaterial zu den KI-Workshops von dbrains academy. Fragen, Korrekturen und
 </details>
 
 <details>
-<summary><strong>Kapitel 2: Mit KI arbeiten</strong> (12 Begriffe)</summary>
+<summary><strong>Kapitel 2: Mit KI arbeiten</strong> (13 Begriffe)</summary>
 
 - [Prompt](#prompt)
-- [Prompting](#prompting)
+- [Prompt Engineering](#prompt-engineering)
 - [Kontext](#kontext)
 - [Kontextfenster](#kontextfenster)
+- [Context Engineering](#context-engineering)
 - [Chat](#chat)
 - [Systemprompt](#systemprompt)
 - [Persona](#persona)
@@ -395,25 +396,23 @@ _Im Alltag:_
 >
 > „Was stand denn in deinem Prompt? Wenn da nur ‚Präsentation Nachhaltigkeit‘ steht, kann das nichts werden. Schreib rein, welcher Kunde, welche Branche, wie viele Folien, und häng das letzte Angebot an.“
 
-### Prompting
+### Prompt Engineering
 
-Englisch: *Prompting*
+Prompt Engineering (auf Deutsch schlicht Prompting) ist die Fertigkeit, einen [Prompt](#prompt) so zu formulieren, dass die KI eine brauchbare Antwort liefert. Der Name klingt technisch, die Sache ist es nicht. Es ist das, was du schon kannst, wenn du einer neuen Kollegin eine Aufgabe erklärst: sagen, was du brauchst, wofür, bis wann und in welcher Form.
 
-Prompting ist die Fertigkeit, einen [Prompt](#prompt) so zu formulieren, dass die KI eine brauchbare Antwort liefert. Es ist kein Zauber und keine Programmiersprache. Es ist das, was du schon kannst, wenn du einer neuen Kollegin eine Aufgabe erklärst: sagen, was du brauchst, wofür, bis wann und in welcher Form.
-
-Der Vergleich mit der neuen Kollegin hilft bei fast jeder Entscheidung. Eine neue Kollegin kennt deine Kunden nicht, deine Vorlagen nicht und die Vorgeschichte nicht. Du würdest ihr nicht zurufen „Mach mal das Angebot“, sondern erklären, für wen es ist, was angeboten wird und wie eure Angebote normalerweise aussehen. Genau das ist Prompting. Je mehr davon im Prompt steht, desto weniger musst du hinterher korrigieren.
+Der Vergleich mit der neuen Kollegin hilft bei fast jeder Entscheidung. Eine neue Kollegin kennt deine Kunden nicht, deine Vorlagen nicht und die Vorgeschichte nicht. Du würdest ihr nicht zurufen „Mach mal das Angebot“, sondern erklären, für wen es ist, was angeboten wird und wie eure Angebote normalerweise aussehen. Genau das ist Prompt Engineering. Je mehr davon im Prompt steht, desto weniger musst du hinterher korrigieren.
 
 Ein paar Techniken haben sich bewährt und eigene Namen bekommen. Du kannst der KI eine [Persona](#persona) geben, damit sie aus einer bestimmten Perspektive antwortet. Du kannst ihr mit [Few-Shot Prompting](#few-shot-prompting) Musterbeispiele zeigen, damit sie deinen Stil trifft. Du kannst sie per [Chain of Thought](#chain-of-thought) bitten, Schritt für Schritt vorzugehen, wenn die Aufgabe mehrere Überlegungen braucht. Und du kannst das [Ausgabeformat](#ausgabeformat) festlegen. Keine dieser Techniken ist Pflicht. Sie sind Werkzeuge, die du nimmst, wenn die einfache Frage nicht reicht.
 
-Unter dem Namen „Prompt Engineering“ wurde Prompting zeitweise als eigener Beruf gehandelt, mit Kursen, Zertifikaten und angeblichen Geheimformeln. Für den Arbeitsalltag ist das übertrieben. Die Modelle sind inzwischen gut darin, normale Sprache zu verstehen. Was zählt, ist Klarheit, nicht Tricks. Ein Prompt, der dein Ziel, den Hintergrund und das gewünschte Ergebnis sauber beschreibt, schlägt jede Formel aus dem Internet.
+Prompt Engineering wurde zeitweise als eigener Beruf gehandelt, mit Kursen, Zertifikaten und angeblichen Geheimformeln. Für den Arbeitsalltag ist das übertrieben. Die Modelle sind inzwischen gut darin, normale Sprache zu verstehen. Was zählt, ist Klarheit, nicht Tricks. Ein Prompt, der dein Ziel, den Hintergrund und das gewünschte Ergebnis sauber beschreibt, schlägt jede Formel aus dem Internet. Bei längeren Aufgaben und Agenten verschiebt sich der Schwerpunkt ohnehin vom einzelnen Prompt zur Frage, welches Material die KI überhaupt bekommt. Dafür hat sich der Begriff [Context Engineering](#context-engineering) etabliert.
 
-Prompting lernt man durch Üben. Schau dir an, wo die Antwort danebenlag, und frag dich, was die KI nicht wissen konnte. Meistens fehlte eine Information, die du für selbstverständlich gehalten hast. Beim nächsten Mal steht sie im Prompt.
+Prompt Engineering lernt man durch Üben. Schau dir an, wo die Antwort danebenlag, und frag dich, was die KI nicht wissen konnte. Meistens fehlte eine Information, die du für selbstverständlich gehalten hast. Beim nächsten Mal steht sie im Prompt.
 
-_Typischer Irrtum:_ „Ich kann nicht prompten, ich bin nicht technisch.“ Prompting hat mit Technik nichts zu tun. Wer eine Aufgabe klar delegieren kann, kann auch prompten.
+_Typischer Irrtum:_ „Ich kann nicht prompten, ich bin nicht technisch.“ Prompt Engineering hat mit Technik nichts zu tun. Wer eine Aufgabe klar delegieren kann, kann auch prompten.
 
 _Im Alltag:_
 
-> „Ich hab gehört, man muss für Prompting einen Kurs machen, sonst bringt ChatGPT nichts.“
+> „Ich hab gehört, man muss für Prompt Engineering einen Kurs machen, sonst bringt ChatGPT nichts.“
 >
 > „Muss man nicht. Schreib den Auftrag so, wie du ihn der neuen Praktikantin erklären würdest. Mit Ziel, Hintergrund und wie das Ergebnis aussehen soll. Das ist schon das meiste.“
 
@@ -421,7 +420,7 @@ _Im Alltag:_
 
 Englisch: *Context*
 
-Kontext ist alles, was die KI in diesem Moment über deine Aufgabe weiß. Dazu zählen dein [Prompt](#prompt), der bisherige Gesprächsverlauf, angehängte Dateien und ein fester [Systemprompt](#systemprompt), der im Hintergrund mitläuft. Was nicht in diesem Paket steckt, kennt die KI nicht. Sie weiß nicht, in welcher Firma du arbeitest, wer dein Chef ist oder was gestern in der Besprechung gesagt wurde, außer du schreibst es ihr.
+Kontext ist alles, was die KI in diesem Moment über deine Aufgabe weiß. Dazu zählen dein [Prompt](#prompt), der bisherige Gesprächsverlauf, angehängte Dateien und ein fester [Systemprompt](#systemprompt), der im Hintergrund mitläuft. Was nicht in diesem Paket steckt, kennt die KI nicht. Dieses Paket bewusst zusammenzustellen, nennt man [Context Engineering](#context-engineering). Sie weiß nicht, in welcher Firma du arbeitest, wer dein Chef ist oder was gestern in der Besprechung gesagt wurde, außer du schreibst es ihr.
 
 Das ist der häufigste Grund für enttäuschende Antworten. Du fragst nach einem „Entwurf für die Kundenmail“, und die KI schreibt eine allgemeine, höfliche Mail an niemanden Bestimmten. Sie konnte nicht anders. Der Kunde, der Anlass, der bisherige Schriftverkehr, euer Tonfall, nichts davon war im Kontext. Das Sprachmodell hat zwar sehr viel [Trainingswissen](#trainingswissen) über Kundenmails im Allgemeinen, aber nichts über diese eine Situation.
 
@@ -460,6 +459,26 @@ _Im Alltag:_
 > „Copilot hat am Anfang meines Chats noch gewusst, dass alles auf Englisch sein soll. Jetzt antwortet er plötzlich auf Deutsch.“
 >
 > „Dein Chat ist wahrscheinlich zu lang geworden, dann rutscht das Kontextfenster weiter und die Anfangsanweisung ist weg. Mach einen neuen Chat auf und schreib die Sprachvorgabe gleich wieder rein.“
+
+### Context Engineering
+
+Context Engineering (Kontextgestaltung) bedeutet, bewusst zu steuern, welche Informationen die KI für eine Aufgabe bekommt: welche Dokumente, welche Vorgaben, welche Beispiele, welche Vorgeschichte. Beim [Prompt Engineering](#prompt-engineering) geht es um die Formulierung deiner Anfrage. Beim Context Engineering geht es um alles, was drumherum im [Kontext](#kontext) liegt.
+
+Der Begriff ist entstanden, weil die Grenzen des Prompts sichtbar wurden. Bei einer kurzen Frage reicht ein guter Satz. Bei einer Aufgabe wie „Erstelle den Quartalsbericht für den Vertrieb“ entscheidet nicht die Formulierung, sondern das Material: die richtigen Zahlen, die Berichtsvorlage vom letzten Quartal, die Liste der Kunden, die der Chef sehen will, und der Hinweis, dass zwei Zahlen vertraulich sind. Fehlt das, kann der beste Prompt nichts retten. Ist es da, reicht ein schlichter Auftrag.
+
+Im Arbeitsalltag heißt Context Engineering vor allem auswählen. Nicht alles hochladen, was es gibt, sondern das, was für die Aufgabe zählt. Ein [Kontextfenster](#kontextfenster) ist begrenzt, und zu viel Material führt zu [Kontextverlust](#kontextverlust): Die KI übersieht dann genau den Absatz, auf den es ankommt. Gute Praxis ist, Material zu kürzen, Veraltetes wegzulassen und wichtige Vorgaben an den Anfang oder das Ende zu stellen. In Microsoft 365 Copilot steuerst du den Kontext, indem du konkrete Dateien und Mails anhängst, statt Copilot in allem suchen zu lassen.
+
+Bei Agenten wird Context Engineering zur Hauptaufgabe. Ein [Agent](#agent) arbeitet über viele Schritte, und bei jedem Schritt entscheidet sich, was er gerade sieht: den [Systemprompt](#systemprompt), die passenden [Skills](#skill), Suchergebnisse aus dem Firmenwissen über [RAG](#rag), den bisherigen Verlauf. Wer einen Agenten baut, verbringt mehr Zeit damit, diese Zusammenstellung richtig zu machen, als mit dem Prompt selbst.
+
+Für dich als Nutzerin oder Nutzer ist die Regel einfach: Bevor du am Prompt feilst, prüf, ob die KI das Material hat, das ein Mensch für die Aufgabe bräuchte. Meistens liegt der Fehler dort.
+
+_Typischer Irrtum:_ Viele glauben, eine schlechte Antwort liege am falschen Prompt-Wortlaut. Häufiger fehlt schlicht das richtige Material im Kontext, oder es ist von zu viel Unwichtigem umgeben.
+
+_Im Alltag:_
+
+> „Ich hab den Prompt für die Angebotszusammenfassung jetzt fünfmal umformuliert, das Ergebnis bleibt oberflächlich.“
+>
+> „Lass den Prompt in Ruhe und schau auf den Kontext. Häng das Angebot als PDF an, dazu unsere Preisliste und die Mail vom Kunden mit seinen Anforderungen. Das ist Context Engineering, und das bringt mehr als jede Formulierung.“
 
 ### Chat
 
@@ -1034,7 +1053,7 @@ Ein Beispiel aus der Verwaltung: Jede Rechnung, die im Postfach „rechnungen@�
 
 Der Unterschied zum [Agenten](#agent) liegt in der Planung. Ein Workflow hat einen festen Ablauf, den ein Mensch vorher gebaut hat. Die KI entscheidet nur innerhalb ihres einen Schritts. Ein Agent plant den Ablauf selbst und wählt bei jedem Schritt, was als Nächstes sinnvoll ist. Workflows sind damit vorhersehbarer, günstiger und leichter zu prüfen. Agenten sind flexibler, aber schwerer zu kontrollieren. Für wiederkehrende, gleichförmige Aufgaben passt der Workflow, für Aufgaben mit jedes Mal anderem Weg eher der Agent. Beides lässt sich kombinieren: Ein Workflow kann als einen Schritt einen Agenten aufrufen, den du im [Agent Builder](#agent-builder) gebaut hast.
 
-Beim Bauen eines Workflows mit KI-Schritt lohnt sich dieselbe Sorgfalt wie beim [Prompting](#prompting). Der KI-Schritt bekommt einen festen Prompt, der für alle Eingaben gelten muss. Teste ihn mit zehn echten Beispielen, bevor der Workflow live geht, und baue einen Prüfschritt ein, wenn die Ausgabe Folgen hat. Was im Chat ein kleiner Fehler ist, wiederholt sich im Workflow hundertfach. Im Unternehmen ist das die Abwägung zwischen [Augmentation](#augmentation) und voller Automatisierung.
+Beim Bauen eines Workflows mit KI-Schritt lohnt sich dieselbe Sorgfalt wie beim [Prompt Engineering](#prompt-engineering). Der KI-Schritt bekommt einen festen Prompt, der für alle Eingaben gelten muss. Teste ihn mit zehn echten Beispielen, bevor der Workflow live geht, und baue einen Prüfschritt ein, wenn die Ausgabe Folgen hat. Was im Chat ein kleiner Fehler ist, wiederholt sich im Workflow hundertfach. Im Unternehmen ist das die Abwägung zwischen [Augmentation](#augmentation) und voller Automatisierung.
 
 _Typischer Irrtum:_ Ein Workflow mit KI-Schritt ist kein Agent, auch wenn Produkte ihn so nennen. Der Ablauf ist festgelegt, die KI füllt nur eine Lücke darin aus.
 
