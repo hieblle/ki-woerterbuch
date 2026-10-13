@@ -61,9 +61,13 @@ const objects = new Map<string, NodeObj>();
 function inFilter(n: Node) {
   return chapterFilter === null || n.chapter === chapterFilter;
 }
+function focusTarget(): Node | null {
+  return selected ?? hovered;
+}
 function linkActive(l: Link): boolean {
-  if (!selected) return false;
-  return linkId(l.source) === selected.id || linkId(l.target) === selected.id;
+  const f = focusTarget();
+  if (!f) return false;
+  return linkId(l.source) === f.id || linkId(l.target) === f.id;
 }
 
 // ---------- Textures ----------
@@ -109,6 +113,7 @@ const Graph = new ForceGraph3D(el, {
   .backgroundColor(palette().bg)
   .showNavInfo(false)
   .enableNodeDrag(false)
+  .nodeLabel(() => "")
   .nodeThreeObject((n) => {
     const node = n as Node;
     const r = radiusOf(node);
@@ -142,6 +147,7 @@ const Graph = new ForceGraph3D(el, {
     if (hovered === node) return;
     hovered = node;
     el.style.cursor = node ? "pointer" : "grab";
+    if (!selected) setAutoRotate(!node, node ? 0 : 1500);
     paint();
   })
   .onNodeClick((n) => selectNode(n as Node, true))
@@ -161,6 +167,27 @@ Graph.cameraPosition({ x: 0, y: 0, z: 400 });
   controls.zoomSpeed = 0.7;
   controls.minDistance = 60;
   controls.maxDistance = 900;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.25;
+}
+const HOME_DISTANCE = 400;
+let rotateTimer = 0;
+function setAutoRotate(on: boolean, delay = 0) {
+  const controls = Graph.controls() as any;
+  clearTimeout(rotateTimer);
+  if (!on) {
+    controls.autoRotate = false;
+    return;
+  }
+  rotateTimer = window.setTimeout(() => (controls.autoRotate = true), delay);
+}
+// Pause the idle rotation while the user drags; resume shortly after.
+{
+  const controls = Graph.controls() as any;
+  controls.addEventListener("start", () => setAutoRotate(false));
+  controls.addEventListener("end", () => {
+    if (!selected && !hovered) setAutoRotate(true, 2500);
+  });
 }
 applyFog();
 
@@ -177,7 +204,8 @@ function paint() {
     const active = inFilter(n);
     const isSel = selected?.id === n.id;
     const isHov = hovered?.id === n.id;
-    const isNeighbor = selected ? neighbors.get(selected.id)?.has(n.id) === true : false;
+    const f = focusTarget();
+    const isNeighbor = f ? neighbors.get(f.id)?.has(n.id) === true : false;
     (o.disc.material as SpriteMaterial).color.copy(toneOf(n));
     (o.disc.material as SpriteMaterial).opacity = active ? 1 : 0.12;
     o.ring.visible = isSel || isHov;
@@ -190,8 +218,19 @@ function paint() {
   Graph.linkDirectionalParticles(Graph.linkDirectionalParticles());
 }
 
+function returnHome() {
+  const cam = Graph.camera() as any;
+  const controls = Graph.controls() as any;
+  const dir = cam.position.clone().sub(controls.target);
+  if (dir.length() < 1e-3) dir.set(0, 0, 1);
+  dir.normalize().multiplyScalar(HOME_DISTANCE);
+  Graph.cameraPosition({ x: dir.x, y: dir.y, z: dir.z }, { x: 0, y: 0, z: 0 }, 1100);
+  setAutoRotate(true, 1200);
+}
+
 function focusNode(node: Node) {
   if (node.x === undefined || node.y === undefined || node.z === undefined) return;
+  setAutoRotate(false);
   const cam = Graph.camera() as any;
   const controls = Graph.controls() as any;
   const nodePos = new Vector3(node.x, node.y, node.z);
@@ -239,6 +278,7 @@ function closePanel() {
   panel.hidden = true;
   paint();
   setUrl({ term: null });
+  returnHome();
 }
 
 function renderPanel(node: Node) {
@@ -502,6 +542,7 @@ function readUrl(initial = false) {
     selected = null;
     panel.hidden = true;
     paint();
+    returnHome();
   }
 }
 addEventListener("popstate", () => readUrl(false));
