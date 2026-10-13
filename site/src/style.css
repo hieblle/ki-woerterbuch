@@ -51,6 +51,25 @@ a { color: var(--primary); }
 button { font: inherit; color: inherit; }
 
 #graph { position: fixed; inset: 0; }
+
+.loader {
+  position: fixed; inset: 0; z-index: 60; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+.loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-inner { text-align: center; padding: 0 24px; animation: loader-in 0.7s ease both; }
+@keyframes loader-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.loader-eyebrow {
+  font-family: var(--font-head); font-size: 11px; font-weight: 600; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--text-muted); margin: 0 0 14px;
+}
+.loader-title {
+  font-family: var(--font-head); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em;
+  font-size: clamp(28px, 6vw, 56px); line-height: 1.05; margin: 0 0 26px; color: var(--text);
+}
+.loader-bar { width: min(260px, 60vw); height: 2px; background: var(--border); margin: 0 auto; overflow: hidden; border-radius: 2px; }
+.loader-bar span { display: block; height: 100%; width: 0; background: var(--primary); transition: width 0.25s ease; }
 .grain {
   position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: 0.55;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.13 0 0 0 0 0.09 0 0 0 0 0.25 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");

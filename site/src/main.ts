@@ -6,7 +6,7 @@ import data from "./generated/dictionary.json";
 
 type Node = (typeof data.nodes)[number] & { x?: number; y?: number; z?: number; degree: number };
 type Link = { source: string | Node; target: string | Node };
-type NodeObj = { node: Node; disc: Sprite; ring: Sprite; label: SpriteText };
+type NodeObj = { node: Node; group: Group; disc: Sprite; ring: Sprite; label: SpriteText };
 
 const REPO_URL = "https://github.com/hieblle/ki-woerterbuch";
 const README_URL = `${REPO_URL}#`;
@@ -53,6 +53,9 @@ function palette() {
 }
 
 // ---------- State ----------
+let engineStopped = false;
+let loaderDone = false;
+let unfolded = false; // set once the intro animation has placed every node
 let selected: Node | null = null;
 let hovered: Node | null = null;
 let chapterFilter: number | null = null;
@@ -131,13 +134,14 @@ const Graph = new ForceGraph3D(el, {
     label.position.y = r + 2.6;
     label.color = palette().label;
     g.add(disc, ring, label);
-    objects.set(node.id, { node, disc, ring, label });
+    if (!unfolded) g.scale.setScalar(0.001);
+    objects.set(node.id, { node, group: g, disc, ring, label });
     return g;
   })
   .nodeThreeObjectExtend(false)
   .linkWidth(0)
   .linkOpacity(1)
-  .linkColor((l) => (linkActive(l as Link) ? palette().linkActive : palette().linkIdle))
+  .linkColor((l) => (!unfolded ? "rgba(0,0,0,0)" : linkActive(l as Link) ? palette().linkActive : palette().linkIdle))
   .linkDirectionalParticles((l) => (linkActive(l as Link) ? 3 : 0))
   .linkDirectionalParticleWidth(1.4)
   .linkDirectionalParticleSpeed(0.0045)
@@ -155,10 +159,11 @@ const Graph = new ForceGraph3D(el, {
     if (selected) closePanel();
   });
 
-Graph.warmupTicks(100).cooldownTime(4000);
+// Layout is computed up front; the visible "unfold" is animated separately (see intro).
+Graph.warmupTicks(140).cooldownTicks(0);
 Graph.d3Force("charge")?.strength(-150);
 Graph.d3Force("link")?.distance(() => 36);
-Graph.cameraPosition({ x: 0, y: 0, z: 400 });
+Graph.cameraPosition({ x: 0, y: 0, z: 1100 });
 {
   const controls = Graph.controls() as any;
   controls.enableDamping = true;
@@ -170,7 +175,7 @@ Graph.cameraPosition({ x: 0, y: 0, z: 400 });
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.25;
 }
-const HOME_DISTANCE = 400;
+const HOME_DISTANCE = 470;
 let rotateTimer = 0;
 function setAutoRotate(on: boolean, delay = 0) {
   const controls = Graph.controls() as any;
@@ -256,9 +261,89 @@ function focusNode(node: Node) {
   Graph.cameraPosition({ x: pos.x, y: pos.y, z: pos.z }, { x: target.x, y: target.y, z: target.z }, 800);
 }
 
+const $ = (id: string) => document.getElementById(id)!;
+
+// ---------- Intro: loader, camera approach, node reveal ----------
+const loader = $("loader");
+const loaderFill = $("loader-fill");
+const introStart = performance.now();
+const INTRO_MIN_MS = 1500;
+let progress = 0;
+const progressTimer = window.setInterval(() => {
+  progress = Math.min(0.9, progress + 0.07);
+  loaderFill.style.width = `${progress * 100}%`;
+}, 90);
+
+
+Graph.onEngineStop(() => {
+  engineStopped = true;
+  maybeUnfold();
+});
+// Fallback: treat the layout as ready once every node has a position that stayed put for a frame.
+{
+  let last = "";
+  const poll = () => {
+    if (engineStopped) return;
+    const ready = nodes.every((n) => n.x !== undefined);
+    const sig = ready ? nodes.map((n) => `${n.x!.toFixed(1)},${n.y!.toFixed(1)}`).join("|") : "";
+    if (ready && sig === last) {
+      engineStopped = true;
+      maybeUnfold();
+      return;
+    }
+    last = sig;
+    requestAnimationFrame(poll);
+  };
+  requestAnimationFrame(poll);
+}
+
+// Nodes grow and travel from the center to their computed position; hubs lead.
+function maybeUnfold() {
+  if (unfolded || !engineStopped || !loaderDone) return;
+  unfolded = true;
+  const start = performance.now();
+  const travel = 2000;
+  const stagger = 600;
+  const order = [...objects.values()].sort((a, b) => b.node.degree - a.node.degree);
+  const delays = new Map(order.map((o, i) => [o.node.id, (i / order.length) * stagger]));
+  const tick = () => {
+    const now = performance.now();
+    let pending = false;
+    for (const o of objects.values()) {
+      const n = o.node;
+      const t = Math.min(1, Math.max(0, (now - start - delays.get(n.id)!) / travel));
+      const eased = 1 - Math.pow(1 - t, 3);
+      o.group.position.set((n.x ?? 0) * eased, (n.y ?? 0) * eased, (n.z ?? 0) * eased);
+      o.group.scale.setScalar(Math.max(0.001, Math.min(1, eased * 1.4)));
+      if (t < 1) pending = true;
+    }
+    if (pending) requestAnimationFrame(tick);
+    else {
+      paint();
+      if (selected) focusNode(selected);
+    }
+  };
+  requestAnimationFrame(tick);
+}
+
+function finishIntro() {
+  clearInterval(progressTimer);
+  loaderFill.style.width = "100%";
+  setTimeout(() => {
+    loader.classList.add("done");
+    loaderDone = true;
+    maybeUnfold();
+    if (!selected) Graph.cameraPosition({ x: 0, y: 0, z: HOME_DISTANCE }, { x: 0, y: 0, z: 0 }, 2600);
+  }, 250);
+}
+
+Promise.all([document.fonts?.ready ?? Promise.resolve()]).then(() => {
+  const elapsed = performance.now() - introStart;
+  setTimeout(finishIntro, Math.max(0, INTRO_MIN_MS - elapsed));
+});
+
 // ---------- Panel ----------
 const panel = document.getElementById("panel")!;
-const $ = (id: string) => document.getElementById(id)!;
 $("p-total").textContent = String(nodes.length);
 $("info-count").textContent = String(nodes.length);
 ($("info-repo") as HTMLAnchorElement).href = REPO_URL;
@@ -528,16 +613,8 @@ function readUrl(initial = false) {
     renderPanel(n);
     panel.hidden = false;
     paint();
-    if (initial) {
-      let done = false;
-      const go = () => {
-        if (done) return;
-        done = true;
-        focusNode(n);
-      };
-      Graph.onEngineStop(go);
-      setTimeout(go, 5500);
-    } else focusNode(n);
+    if (!initial) focusNode(n);
+    // On initial load the unfold animation focuses the node when it finishes.
   } else if (!initial) {
     selected = null;
     panel.hidden = true;
@@ -551,3 +628,4 @@ readUrl(true);
 addEventListener("resize", () => Graph.width(innerWidth).height(innerHeight));
 (window as any).__graph = Graph;
 (window as any).__byId = byId;
+(window as any).__state = () => ({ engineStopped, loaderDone, unfolded, selected: selected?.id ?? null });
