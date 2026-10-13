@@ -8,7 +8,7 @@ Copilot ist der Name, den Microsoft für seine KI-Funktionen verwendet. Im Arbei
 
 In jeder Anwendung macht Copilot etwas anderes. In Word schreibt er Entwürfe und fasst lange Dokumente zusammen. In Outlook entwirft er Antworten und bündelt lange Mail-Verläufe. In Teams fasst er Meetings zusammen, auch solche, in denen du nicht warst, sofern ein Transkript vorliegt. In Excel hilft er bei Formeln und erkennt Muster in Tabellen. In PowerPoint baut er aus einem Word-Dokument einen ersten Foliensatz. Dazu kommt ein eigenes Chatfenster, in dem du über alle Quellen hinweg fragen kannst.
 
-Was Copilot nicht kann, ist ebenso wichtig. Er kennt nur, was in Microsoft 365 liegt und für dich freigegeben ist. Er macht Fehler, gerade bei Zahlen in Excel und bei Zusammenfassungen, die Nebensätze verlieren. Und er ersetzt kein Fachwissen: Der Entwurf eines Vertrags aus Copilot ist ein Entwurf, nicht mehr. Die Regel [Mensch prüft](./Mensch prüft.md) gilt hier ohne Ausnahme.
+Was Copilot nicht kann, ist ebenso wichtig. Er kennt nur, was in Microsoft 365 liegt und für dich freigegeben ist. Er macht Fehler, gerade bei Zahlen in Excel und bei Zusammenfassungen, die Nebensätze verlieren. Und er ersetzt kein Fachwissen: Der Entwurf eines Vertrags aus Copilot ist ein Entwurf, nicht mehr. Das Prinzip [Human-in-the-Loop](./Human-in-the-Loop.md), also dass ein Mensch prüft, gilt hier ohne Ausnahme.
 
 Es gibt mehrere Produkte mit dem Namen. Der kostenlose Copilot-Chat, erreichbar über Browser oder Windows, ist ein KI-Chatbot mit Websuche, aber ohne Zugriff auf deine Firmendaten. Erst die kostenpflichtige Lizenz für Microsoft 365 Copilot verbindet die KI mit deinen Mails, Dateien und Kalendern. Frag im Zweifel deine IT, welche Variante bei euch freigeschaltet ist.
 

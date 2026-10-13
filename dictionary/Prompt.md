@@ -11,7 +11,7 @@ Ein guter Prompt enthält drei Dinge. Erstens das Ziel: Was soll am Ende da sein
 
 Material gehört direkt in den Prompt. Wenn du eine Besprechungsnotiz zusammenfassen lassen willst, füge die Notiz ein oder hänge die Datei an. In Microsoft 365 Copilot kannst du Dateien aus OneDrive oder SharePoint direkt verweisen, dann zieht Copilot den Inhalt selbst. Was nicht im Prompt oder im angehängten Material steht, existiert für die KI nicht.
 
-Ein Prompt muss nicht perfekt sein. Du kannst ihn im Gespräch ergänzen und die Antwort [nachschärfen](./Nachschärfen.md). Für Aufgaben, die immer wieder vorkommen, lohnt sich eine [Prompt-Vorlage](./Prompt-Vorlage.md), die du nur noch anpasst.
+Ein Prompt muss nicht perfekt sein. Du kannst ihn im Gespräch ergänzen und die Antwort [nachschärfen](./Iterieren.md). Für Aufgaben, die immer wieder vorkommen, lohnt sich eine [Prompt-Vorlage](./Prompt-Vorlage.md), die du nur noch anpasst.
 
 _Typischer Irrtum:_ Viele glauben, ein Prompt müsse eine geheime Formel oder ein bestimmter Befehl sein. Tatsächlich ist er einfach ein klarer Arbeitsauftrag in ganzen Sätzen, so wie du ihn auch einer Kollegin schreiben würdest.
 

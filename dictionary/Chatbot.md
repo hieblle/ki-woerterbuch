@@ -1,6 +1,5 @@
 ---
 description: Programm, mit dem du per Texteingabe im Dialog arbeitest, vom einfachen Regel-Bot bis zu ChatGPT
-english: Chatbot
 ---
 
 Ein Chatbot ist ein Programm, mit dem du dich schriftlich unterhältst: Du tippst eine Frage, es antwortet in Text. Der Begriff ist alt und deckt sehr unterschiedliche Dinge ab, vom Hilfe-Fenster auf einer Firmenwebsite bis zu ChatGPT.
@@ -9,7 +8,7 @@ Die klassischen Chatbots arbeiten nach festen Regeln. Sie erkennen Stichwörter 
 
 Die neuen Chatbots beruhen auf einem [Sprachmodell](./Sprachmodell.md). ChatGPT, Claude, Gemini und der Chat in Microsoft 365 Copilot gehören dazu. Sie haben keine Liste mit Antworten, sondern erzeugen den Text bei jeder Anfrage neu. Deshalb kannst du frei formulieren, nachfragen, Themen wechseln und dir eine E-Mail umschreiben lassen, ohne dass jemand diesen Fall vorher eingeplant hat. Das macht sie nützlich, bringt aber auch die bekannten Schwächen mit: Sie können überzeugend klingende Fehler produzieren, siehe [Halluzination](./Halluzination.md).
 
-Du erkennst den Unterschied schnell. Ein Regel-Bot antwortet immer gleich auf dieselbe Frage und bietet oft Auswahlknöpfe an. Ein KI-Chatbot antwortet jedes Mal etwas anders formuliert und geht auf deine [Unterhaltung](./Unterhaltung.md) ein, also auf das, was du vorher geschrieben hast.
+Du erkennst den Unterschied schnell. Ein Regel-Bot antwortet immer gleich auf dieselbe Frage und bietet oft Auswahlknöpfe an. Ein KI-Chatbot antwortet jedes Mal etwas anders formuliert und geht auf den bisherigen [Chat](./Chat.md) ein, also auf das, was du vorher geschrieben hast.
 
 Im Arbeitsalltag ist der KI-Chatbot meist der Einstieg: Du öffnest ein Fenster, stellst eine Frage, bekommst einen Entwurf. Was er nicht von sich aus kann, ist auf deine Dateien, Mails oder Systeme zugreifen. Dafür braucht es mehr, siehe [KI-Assistent](./KI-Assistent.md).
 

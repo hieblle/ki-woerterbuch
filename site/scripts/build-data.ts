@@ -62,7 +62,9 @@ for (const s of sections) {
       return "";
     });
 
-    const html = (marked.parse(md.trim()) as string).trim();
+    // Markdown link targets must not contain spaces; encode them before parsing.
+    const encoded = md.trim().replace(/\]\(\.\/([^)]+?)\.md\)/g, (_m, f) => `](./${encodeURIComponent(f)}.md)`);
+    const html = (marked.parse(encoded) as string).trim();
     nodes.push({
       id: e.slug,
       name: term,

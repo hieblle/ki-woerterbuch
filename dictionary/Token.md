@@ -9,7 +9,7 @@ Ein Beispiel macht das greifbar. Der Satz „Die Rechnung ist überfällig.“ h
 
 Tokens bestimmen drei Dinge im Alltag. Erstens die Grenze dessen, was das Modell auf einmal verarbeiten kann. Das [Kontextfenster](./Kontextfenster.md) wird in Tokens gemessen, und ein Vertrag mit 40 Seiten kann an diese Grenze stoßen. Zweitens die Geschwindigkeit, denn das Modell erzeugt Token für Token, und eine lange Antwort dauert entsprechend länger. Drittens die Kosten, weil Anbieter die Nutzung über Schnittstellen nach Tokens abrechnen. Bei einer Lizenz wie Microsoft 365 Copilot siehst du davon nichts, aber die Grenzen gelten trotzdem.
 
-Du merkst Tokens meist erst, wenn etwas nicht mehr passt. Das Modell bricht eine lange Zusammenfassung ab, meldet, dass das Dokument zu groß ist, oder vergisst den Anfang einer langen [Unterhaltung](./Unterhaltung.md). Dann hilft es, den Text zu kürzen, in Abschnitte zu teilen oder nur die relevanten Seiten mitzugeben.
+Du merkst Tokens meist erst, wenn etwas nicht mehr passt. Das Modell bricht eine lange Zusammenfassung ab, meldet, dass das Dokument zu groß ist, oder vergisst den Anfang eines langen [Chats](./Chat.md). Dann hilft es, den Text zu kürzen, in Abschnitte zu teilen oder nur die relevanten Seiten mitzugeben.
 
 Für das Schreiben von Prompts heißt das: Jedes Wort kostet Tokens, aber Knappheit ist kein Ziel an sich. Ein klarer Satz mehr, der ein Missverständnis verhindert, spart mehr, als er kostet.
 

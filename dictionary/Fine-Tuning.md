@@ -15,9 +15,9 @@ Die beiden Ansätze lösen unterschiedliche Probleme. RAG bringt Wissen ins Spie
 | Aktuelles Firmenwissen nutzen            | RAG oder Upload                                                         |
 | Festen Stil oder festes Format erzwingen | Fine-Tuning, oft reicht aber eine [Prompt-Vorlage](./Prompt-Vorlage.md) |
 | Fachsprache einer Nische beherrschen     | Fine-Tuning                                                             |
-| Einzelne Aufgabe schnell lösen           | Prompt mit [Beispielen](./Beispiele geben.md)                           |
+| Einzelne Aufgabe schnell lösen           | Prompt mit Beispielen ([Few-Shot Prompting](./Few-Shot Prompting.md))   |
 
-Bevor eine Firma über Fine-Tuning nachdenkt, lohnt der Blick auf einfachere Mittel. Eine gute Prompt-Vorlage mit zwei, drei Beispielen oder ein [Eigener Assistent](./Eigene Assistenten.md) in ChatGPT oder Copilot deckt den Stilwunsch meist ab. Fine-Tuning bleibt für Anbieter und große Unternehmen interessant, die ein Modell für eine eng umrissene Aufgabe in hoher Stückzahl einsetzen.
+Bevor eine Firma über Fine-Tuning nachdenkt, lohnt der Blick auf einfachere Mittel. Eine gute Prompt-Vorlage mit zwei, drei Beispielen oder ein eigener Assistent wie ein [Custom GPT](./Custom GPT.md) in ChatGPT oder ein Agent in Copilot deckt den Stilwunsch meist ab. Fine-Tuning bleibt für Anbieter und große Unternehmen interessant, die ein Modell für eine eng umrissene Aufgabe in hoher Stückzahl einsetzen.
 
 _Typischer Irrtum:_ „Wir müssen das Modell mit unseren Daten trainieren, damit es uns kennt.“ Meist nicht. Was das Modell kennen soll, gibst du ihm als Kontext mit, per Upload oder RAG. Fine-Tuning ändert, wie das Modell schreibt, nicht, was es über euch weiß.
 

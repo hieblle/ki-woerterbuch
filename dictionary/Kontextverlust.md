@@ -5,7 +5,7 @@ english: Context loss
 
 Kontextverlust bedeutet, dass die KI Vorgaben nicht mehr beachtet, die du ihr früher im Gespräch oder in einer Datei gegeben hast. Sie „vergisst“ nichts im menschlichen Sinn, aber die Information wirkt nicht mehr auf die Antwort.
 
-Der Grund ist das [Kontextfenster](./Kontextfenster.md). Ein Modell kann nur eine begrenzte Menge Text gleichzeitig verarbeiten. Alles, was in der [Unterhaltung](./Unterhaltung.md) steht, zählt dazu, also deine Nachrichten, die Antworten und hochgeladene Dateien. Wird das zu viel, fallen ältere Teile heraus oder das Modell gewichtet sie schwächer. Auch innerhalb des Fensters gilt: Was in der Mitte eines sehr langen Dokuments steht, wird eher übersehen als Anfang und Ende.
+Der Grund ist das [Kontextfenster](./Kontextfenster.md). Ein Modell kann nur eine begrenzte Menge Text gleichzeitig verarbeiten. Alles, was im [Chat](./Chat.md) steht, zählt dazu, also deine Nachrichten, die Antworten und hochgeladene Dateien. Wird das zu viel, fallen ältere Teile heraus oder das Modell gewichtet sie schwächer. Auch innerhalb des Fensters gilt: Was in der Mitte eines sehr langen Dokuments steht, wird eher übersehen als Anfang und Ende.
 
 Du merkst es daran, dass das Modell ein Format ignoriert, das du vorgegeben hast, und plötzlich Fließtext statt einer Tabelle liefert. Es wechselt die Anrede oder die Sprache. Es widerspricht einer Aussage aus seiner eigenen früheren Antwort. Bei einer großen Datei nennt es nur Punkte aus den ersten Seiten, und bei einem Vertrag mit 60 Seiten fehlt in der Zusammenfassung die Klausel von Seite 41.
 

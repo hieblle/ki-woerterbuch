@@ -6,7 +6,7 @@ aliases: [Retrieval-Augmented Generation, Retrieval]
 
 RAG (Retrieval-Augmented Generation) ist eine Technik, bei der ein System zu jeder Frage die passenden Textstellen aus einem Dokumentenbestand heraussucht und sie dem Sprachmodell mitgibt. Das Modell antwortet dann auf Basis dieser Stellen statt nur aus dem [Trainingswissen](./Trainingswissen.md).
 
-Der Ablauf hat zwei Schritte. Zuerst das Suchen (Retrieval): Deine Frage wird mit [Semantischer Suche](./Semantische Suche.md) gegen die abgelegten Dokumente abgeglichen, etwa eure Handbücher, Verträge oder das Intranet. Die treffendsten Abschnitte werden ausgewählt. Dann das Antworten (Generation): Diese Abschnitte landen als [Kontextwissen](./Kontextwissen.md) im Chat, und das Modell formuliert daraus die Antwort, oft mit [Quellenangabe](./Quellenangabe.md).
+Der Ablauf hat zwei Schritte. Zuerst das Suchen (Retrieval): Deine Frage wird über [Embeddings](./Embeddings.md) nach ihrer Bedeutung mit den abgelegten Dokumenten abgeglichen, etwa eure Handbücher, Verträge oder das Intranet. Die treffendsten Abschnitte werden ausgewählt. Dann das Antworten (Generation): Diese Abschnitte landen als [Kontextwissen](./Kontextwissen.md) im Chat, und das Modell formuliert daraus die Antwort, meist mit Quellenangaben, siehe [Grounding](./Grounding.md).
 
 RAG ist die Basis vieler Firmen-Chatbots, etwa für den IT-Helpdesk, das HR-Portal oder die Produktdokumentation im Vertrieb. Microsoft 365 Copilot arbeitet nach demselben Prinzip: Über den Microsoft Graph sucht er in deinen Mails, Teams-Chats und SharePoint-Dateien und gibt dem Modell die Treffer mit. Du bekommst nur Inhalte, auf die du selbst Zugriff hast.
 

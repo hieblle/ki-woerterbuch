@@ -14,7 +14,7 @@ Der dritte Unterschied ist die Verwaltung. Die IT kann Konten anlegen und sperre
 
 Darum stellt die Firma eine Lizenz, statt zu sagen „nehmt halt ChatGPT“. Die Lizenz bündelt Datenschutz, Vertrag und Kontrolle, und sie gibt dir eine klare Antwort auf die Frage, welches Werkzeug du für Firmendaten verwenden darfst. Das Gegenteil davon, Privatkonten für Firmenarbeit, nennt man [Schatten-KI](./Schatten-KI.md).
 
-Was die Lizenz nicht tut: Sie macht die Antworten nicht richtiger. Fehler, Erfindungen und Lücken bleiben dieselben wie in der Gratis-Version, und die Regel [Mensch prüft](./Mensch prüft.md) gilt weiterhin.
+Was die Lizenz nicht tut: Sie macht die Antworten nicht richtiger. Fehler, Erfindungen und Lücken bleiben dieselben wie in der Gratis-Version, und das Prinzip [Human-in-the-Loop](./Human-in-the-Loop.md), also dass ein Mensch prüft, gilt weiterhin.
 
 _Typischer Irrtum:_ „Mit der Business-Lizenz darf ich alles eingeben.“ Die Lizenz regelt, was der Anbieter mit den Daten tut. Was du eingeben darfst, regelt eure [KI-Richtlinie](./KI-Richtlinie.md), und die kann strenger sein.
 

@@ -9,9 +9,9 @@ Das Format gehört in den [Prompt](./Prompt.md), am besten in einem eigenen Satz
 
 Mit dem Format steuerst du auch die Weiterverwendung. Eine Tabelle kannst du direkt in Excel kopieren. Eine fertige Mail mit Betreff kannst du in Outlook einfügen. In Microsoft 365 Copilot lässt sich eine Tabelle aus der Antwort direkt als Excel-Datei öffnen. Wer vorher sagt, wofür das Ergebnis gedacht ist, spart sich das Umbauen danach. „Ich füge das in eine PowerPoint-Folie ein, also höchstens fünf Stichpunkte mit je acht Wörtern“ führt zu etwas, das auf die Folie passt.
 
-Tonalität ist Teil des Formats. „Sachlich“, „freundlich, aber bestimmt“, „für Kolleginnen ohne Vorwissen“, solche Angaben wirken. Wo Worte nicht reichen, hilft es, [Beispiele zu geben](./Beispiele geben.md): Ein Mustertext zeigt den Ton genauer als jede Beschreibung. Und wenn das Ergebnis die Form noch nicht trifft, sagst du es im nächsten Schritt und lässt es [nachschärfen](./Nachschärfen.md).
+Tonalität ist Teil des Formats. „Sachlich“, „freundlich, aber bestimmt“, „für Kolleginnen ohne Vorwissen“, solche Angaben wirken. Wo Worte nicht reichen, hilft [Few-Shot Prompting](./Few-Shot Prompting.md): Ein Mustertext zeigt den Ton genauer als jede Beschreibung. Und wenn das Ergebnis die Form noch nicht trifft, sagst du es im nächsten Schritt und lässt es [nachschärfen](./Iterieren.md).
 
-Für Aufgaben, die oft vorkommen, lohnt es sich, das Format fest in [Anweisungen](./Anweisungen.md) oder eine [Prompt-Vorlage](./Prompt-Vorlage.md) zu schreiben. Dann bekommt das ganze Team Protokolle, Angebote oder Statusberichte in derselben Struktur, ohne es jedes Mal neu zu beschreiben.
+Für Aufgaben, die oft vorkommen, lohnt es sich, das Format fest in den [Systemprompt](./Systemprompt.md) oder eine [Prompt-Vorlage](./Prompt-Vorlage.md) zu schreiben. Dann bekommt das ganze Team Protokolle, Angebote oder Statusberichte in derselben Struktur, ohne es jedes Mal neu zu beschreiben.
 
 _Typischer Irrtum:_ Viele nehmen die erste Form hin, die die KI wählt, und bauen dann selbst um. Ein Satz zum Format im Prompt erspart genau diese Arbeit.
 

@@ -1,6 +1,5 @@
 ---
 description: Modus, in dem die KI mehrere Minuten lang recherchiert, viele Quellen liest und einen Bericht mit Belegen liefert
-english: Deep Research
 aliases: [Tiefenrecherche]
 ---
 
@@ -10,7 +9,7 @@ Der Unterschied zur normalen [Websuche](./Websuche.md) liegt in der Tiefe. Eine 
 
 Sinnvoll ist der Modus für Fragen, die du sonst einem Praktikanten für einen halben Tag geben würdest. Beispiele: ein Marktüberblick über Anbieter von Zeiterfassungssoftware für den Einkauf, eine Zusammenfassung der Förderprogramme für Weiterbildung in Österreich für HR, ein Vergleich der Garantiebedingungen von drei Maschinenherstellern für die Produktion. Weniger sinnvoll ist er für schnelle Fragen oder für Themen, zu denen es im Web kaum etwas gibt.
 
-Prüfen musst du trotzdem, und zwar gezielt. Deep Research liefert zwar Belege, aber die KI kann eine Quelle falsch wiedergeben oder eine schwache Quelle wie eine starke behandeln. Klick deshalb die drei wichtigsten Zahlen oder Aussagen an und lies nach, ob die Quelle das wirklich sagt. Achte auch auf das Datum der Quellen; ein Bericht kann aktuell klingen und auf alten Seiten beruhen. Mehr zum Umgang mit Belegen unter [Quellenangabe](./Quellenangabe.md).
+Prüfen musst du trotzdem, und zwar gezielt. Deep Research liefert zwar Belege, aber die KI kann eine Quelle falsch wiedergeben oder eine schwache Quelle wie eine starke behandeln. Klick deshalb die drei wichtigsten Zahlen oder Aussagen an und lies nach, ob die Quelle das wirklich sagt. Achte auch auf das Datum der Quellen; ein Bericht kann aktuell klingen und auf alten Seiten beruhen. Mehr zum Umgang mit Belegen unter [Grounding](./Grounding.md).
 
 Du merkst, dass der Modus nicht gepasst hat, wenn der Bericht lang ist, aber nichts sagt, was du nicht schon wusstest, oder wenn viele Quellen auf dieselbe Website zurückgehen. Dann hilft es, die Frage enger zu stellen und im [Prompt](./Prompt.md) zu sagen, welche Quellenarten du willst, etwa Herstellerseiten, Behörden oder Fachpresse.
 

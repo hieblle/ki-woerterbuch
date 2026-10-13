@@ -4,9 +4,9 @@ english: Pilot / Proof of Concept
 aliases: [Proof of Concept, PoC]
 ---
 
-Ein Pilot ist ein kleiner Test, bevor ein KI-Werkzeug im ganzen Unternehmen eingeführt wird. Oft heißt er auch Proof of Concept (PoC). Eine kleine Gruppe arbeitet einige Wochen mit dem Werkzeug an einem oder zwei [Anwendungsfällen](./Anwendungsfall.md) und sammelt Erfahrungen, bevor Lizenzen für alle gekauft werden.
+Ein Pilot ist ein kleiner Test, bevor ein KI-Werkzeug im ganzen Unternehmen eingeführt wird. Oft heißt er auch Proof of Concept (PoC). Eine kleine Gruppe arbeitet einige Wochen mit dem Werkzeug an einem oder zwei [Use Cases](./Use Case.md) und sammelt Erfahrungen, bevor Lizenzen für alle gekauft werden.
 
-Ein Pilot muss vier Fragen beantworten. Erstens den Nutzen. Spart das Werkzeug tatsächlich Zeit oder verbessert es die Qualität, und wie viel? Zweitens den Aufwand. Wie viel Schulung, Einrichtung und Betreuung braucht es? Drittens die Risiken. Welche Daten fließen wohin, welche Fehler sind aufgetreten, und wie wurden sie bemerkt? Viertens die [Akzeptanz](./Akzeptanz.md). Nutzen die Beteiligten das Werkzeug nach drei Wochen noch, oder sind sie zur alten Arbeitsweise zurückgekehrt?
+Ein Pilot muss vier Fragen beantworten. Erstens den Nutzen. Spart das Werkzeug tatsächlich Zeit oder verbessert es die Qualität, und wie viel? Zweitens den Aufwand. Wie viel Schulung, Einrichtung und Betreuung braucht es? Drittens die Risiken. Welche Daten fließen wohin, welche Fehler sind aufgetreten, und wie wurden sie bemerkt? Viertens die [Adoption](./Adoption.md), also die tatsächliche Nutzung. Nutzen die Beteiligten das Werkzeug nach drei Wochen noch, oder sind sie zur alten Arbeitsweise zurückgekehrt?
 
 Dafür braucht ein Pilot vorher ein klares Ziel. Ein Beispiel: Fünf Personen aus dem Kundenservice nutzen sechs Wochen lang Microsoft 365 Copilot, um Antworten auf Kundenanfragen zu entwerfen. Gemessen wird die Zeit pro Anfrage, die Zahl der Korrekturen und die Rückmeldung der Beteiligten. Ohne solche Messgrößen endet der Pilot mit dem Satz „war ganz interessant“, und niemand kann entscheiden, wie es weitergeht.
 

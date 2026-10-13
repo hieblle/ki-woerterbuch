@@ -1,10 +1,9 @@
 ---
-description: Der KI ein oder zwei Musterbeispiele im Prompt zeigen, damit sie Stil und Form trifft (Few-Shot)
-english: Few-shot prompting
-aliases: [Few-Shot]
+description: Der KI ein oder zwei Musterbeispiele im Prompt zeigen, damit sie Stil und Form trifft
+aliases: [Beispiele geben, Few-Shot, Zero-Shot, One-Shot]
 ---
 
-Beispiele geben heißt, der KI im [Prompt](./Prompt.md) ein oder zwei fertige Muster zu zeigen, statt lange zu beschreiben, was du willst. Im Englischen heißt das Few-Shot Prompting, weil das Modell mit wenigen Beispielen versteht, worauf es hinausläuft. Ein Beispiel, das du selbst gut findest, sagt mehr als drei Absätze Erklärung.
+Few-Shot Prompting heißt, der KI im [Prompt](./Prompt.md) ein oder zwei fertige Muster zu zeigen (Beispiele geben), statt lange zu beschreiben, was du willst. Der Name kommt daher, dass das Modell schon mit wenigen Beispielen („few shots“) versteht, worauf es hinausläuft. Gibst du gar kein Beispiel mit, nennt man das Zero-Shot, bei genau einem Beispiel One-Shot. Ein Beispiel, das du selbst gut findest, sagt mehr als drei Absätze Erklärung.
 
 Der Grund liegt in der Arbeitsweise eines [Sprachmodells](./Sprachmodell.md). Es setzt Muster fort. Wenn du ihm zwei Produktbeschreibungen in eurem Hausstil zeigst und dann die Rohdaten für ein drittes Produkt gibst, erzeugt es eine dritte Beschreibung im gleichen Stil. Länge, Satzbau, Ansprache, Fachbegriffe, alles wird aus den Beispielen übernommen. Beschreibungen wie „locker, aber professionell“ sind dagegen dehnbar. Jeder versteht etwas anderes darunter, das Modell auch.
 

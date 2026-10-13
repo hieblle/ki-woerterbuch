@@ -6,7 +6,7 @@ aliases: [Parametrisches Wissen]
 
 Trainingswissen ist alles, was ein Sprachmodell aus seinem Training mitbringt, bevor du im Chat ein einziges Wort geschrieben hast. Es steckt fest im [Modell](./Modell.md), ähnlich wie das, was du aus der Schule noch im Kopf hast.
 
-Das Modell hat dieses Wissen beim [Training](./Training.md) aus sehr großen Textmengen aufgenommen. Deshalb kann ChatGPT oder Claude dir erklären, wie eine Bilanz aufgebaut ist, wie man eine höfliche Absage formuliert oder was ein Lieferschein ist. Es ist breit, aber es hat zwei Lücken: Es endet an einem bestimmten Datum, dem [Wissensstand](./Wissensstand.md), und es weiß nichts über deine Firma. Eure Preisliste, euer Urlaubsantrag, der Name eurer Abteilungsleiterin, nichts davon ist im Modell.
+Das Modell hat dieses Wissen beim [Training](./Training.md) aus sehr großen Textmengen aufgenommen. Deshalb kann ChatGPT oder Claude dir erklären, wie eine Bilanz aufgebaut ist, wie man eine höfliche Absage formuliert oder was ein Lieferschein ist. Es ist breit, aber es hat zwei Lücken: Es endet an einem bestimmten Datum, dem [Knowledge Cutoff](./Knowledge Cutoff.md), und es weiß nichts über deine Firma. Eure Preisliste, euer Urlaubsantrag, der Name eurer Abteilungsleiterin, nichts davon ist im Modell.
 
 Du merkst die Grenzen daran, dass Antworten allgemein bleiben oder veraltet wirken. Fragst du nach dem aktuellen Ansprechpartner bei einem Lieferanten, bekommst du entweder eine ausweichende Antwort oder eine erfundene, eine sogenannte [Halluzination](./Halluzination.md). Das Modell füllt Lücken gern mit plausibel klingendem Text. Wenn dir eine Antwort zu glatt vorkommt, frag nach, woher die Information stammt, oder gib das passende Material selbst mit.
 

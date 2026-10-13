@@ -16,9 +16,9 @@ In der Praxis lassen sich vier Stufen unterscheiden. Die Grenzen sind fließend,
 
 Die meisten Werkzeuge im Büro arbeiten heute auf Stufe 1 oder 2. Ein [KI-Assistent](./KI-Assistent.md) wie Microsoft 365 Copilot macht Vorschläge, die du übernimmst oder verwirfst. Ein [Agent](./Agent.md) rückt auf Stufe 2 oder 3 vor, wenn er Dateien ablegt oder Mails verschickt. Stufe 4 findest du in Automatisierungen, die ohne Menschen laufen, etwa in der Vorsortierung von Posteingängen.
 
-Je mehr Autonomie, desto wichtiger wird Kontrolle. Auf Stufe 1 fängst du jeden Fehler ab, weil nichts ohne dich passiert. Auf Stufe 4 bemerkst du einen Fehler erst, wenn er Folgen hatte. Deshalb gehören zu höheren Stufen klare Regeln: Was darf der Agent allein, wann muss er fragen, wer prüft stichprobenartig. Im Unternehmen ist das Teil der [KI-Governance](./KI-Governance.md).
+Je mehr Autonomie, desto wichtiger wird Kontrolle. Auf Stufe 1 fängst du jeden Fehler ab, weil nichts ohne dich passiert. Auf Stufe 4 bemerkst du einen Fehler erst, wenn er Folgen hatte. Deshalb gehören zu höheren Stufen klare [Guardrails](./Guardrails.md): Was darf der Agent allein, wann muss er fragen, wer prüft stichprobenartig. Im Unternehmen ist das Teil der [KI-Governance](./KI-Governance.md).
 
-Die richtige Stufe hängt von der Aufgabe ab, nicht vom Werkzeug. Für die Terminsuche im Team reicht Stufe 3. Für eine Kündigung, eine Bestellung über Budget oder eine Mail an einen Kunden ist Stufe 2 angemessen. Ein guter Startpunkt ist, neue Aufgaben auf Stufe 1 oder 2 zu beginnen und die Autonomie erst zu erhöhen, wenn du dem Ergebnis über mehrere Wochen vertraut hast.
+Die richtige Stufe hängt von der Aufgabe ab, nicht vom Werkzeug. Für die Terminsuche im Team reicht Stufe 3. Für eine Kündigung, eine Bestellung über Budget oder eine Mail an einen Kunden ist Stufe 2 angemessen. Ein guter Startpunkt ist, neue Aufgaben in einer [Sandbox](./Sandbox.md) auf Stufe 1 oder 2 zu beginnen und die Autonomie erst zu erhöhen, wenn du dem Ergebnis über mehrere Wochen vertraut hast.
 
 _Typischer Irrtum:_ Mehr Autonomie ist nicht automatisch besser. Ein Agent, der ohne Rückfrage handelt, spart Zeit, verlagert aber die Verantwortung für Fehler nach hinten, wo sie teurer sind.
 

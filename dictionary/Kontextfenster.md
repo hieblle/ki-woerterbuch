@@ -9,7 +9,7 @@ Das klingt nach viel, ist aber schnell voll. Ein langer Chat mit vielen Rückfra
 
 Das Symptom ist [Kontextverlust](./Kontextverlust.md). Die KI hält sich nicht mehr an eine Vorgabe, die du am Anfang gemacht hast. Sie fragt nach etwas, das du schon erklärt hast. Sie widerspricht einer früheren Antwort. Oder sie bezieht sich nicht mehr auf die erste Datei, obwohl du sie hochgeladen hast. Wenn du das merkst, ist das Fenster vermutlich überfüllt.
 
-Was du dann tust: Fang eine neue [Unterhaltung](./Unterhaltung.md) an und gib nur das mit, was für die aktuelle Aufgabe zählt. Bei großen Dokumenten hilft es, erst einzelne Abschnitte zu bearbeiten statt alles auf einmal. Wichtige Vorgaben wiederholst du im neuen Chat oder legst sie als dauerhafte [Anweisungen](./Anweisungen.md) ab.
+Was du dann tust: Fang einen neuen [Chat](./Chat.md) an und gib nur das mit, was für die aktuelle Aufgabe zählt. Bei großen Dokumenten hilft es, erst einzelne Abschnitte zu bearbeiten statt alles auf einmal. Wichtige Vorgaben wiederholst du im neuen Chat oder legst sie als dauerhaften [Systemprompt](./Systemprompt.md) ab.
 
 Auch innerhalb des Fensters ist nicht alles gleich präsent. Modelle beachten Informationen am Anfang und am Ende eines langen Textes oft besser als die in der Mitte. Wenn eine Vorgabe wichtig ist, stell sie an den Schluss deines Prompts oder wiederhole sie.
 

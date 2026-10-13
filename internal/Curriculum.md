@@ -6,10 +6,10 @@
 - Modell
 - Training
 - Token
-- Wissensstand
+- Knowledge Cutoff
 - Nicht-Determinismus
 - Multimodal
-- Reasoning-Modus
+- Reasoning
 
 ## Kapitel 2 — Mit KI arbeiten
 
@@ -17,12 +17,12 @@
 - Prompting
 - Kontext
 - Kontextfenster
-- Unterhaltung
-- Anweisungen
-- Rolle vorgeben
-- Beispiele geben
-- Schritt für Schritt
-- Nachschärfen
+- Chat
+- Systemprompt
+- Persona
+- Few-Shot Prompting
+- Chain of Thought
+- Iterieren
 - Ausgabeformat
 - Prompt-Vorlage
 
@@ -31,25 +31,31 @@
 - Chatbot
 - KI-Assistent
 - Copilot
-- Eigene Assistenten
+- Custom GPT
 - Deep Research
 - Bildgenerierung
-- Sprache und Transkription
+- Transkription
 - Connector
 - Business-Lizenz
-- Lokale KI
+- Open-Source-Modell
 
 ## Kapitel 4 — Agentic AI
 
 - Agentic AI
 - Agent
-- Werkzeugnutzung
+- Tool Use
 - Autonomiegrad
 - Freigabe
-- Computer-Agent
+- Computer Use
 - Multi-Agent-System
 - MCP
 - Workflow-Automatisierung
+- Memory
+- Skill
+- Guardrails
+- Sandbox
+- Agent Builder
+- Vibe Coding
 
 ## Kapitel 5 — Wissen und Daten
 
@@ -58,16 +64,16 @@
 - Dokumente hochladen
 - Websuche
 - RAG
-- Semantische Suche
+- Embeddings
 - Fine-Tuning
-- Quellenangabe
+- Grounding
 
 ## Kapitel 6 — Fehler und Risiken
 
 - Halluzination
-- Verzerrung
-- Schmeichelei
-- Übervertrauen
+- Bias
+- Sycophancy
+- Automation Bias
 - Kontextverlust
 - Prompt Injection
 - Jailbreak
@@ -87,16 +93,17 @@
 - Vertraulichkeit
 - KI-Richtlinie
 - Schatten-KI
+- Betriebsvereinbarung
 
 ## Kapitel 8 — KI im Unternehmen
 
-- Anwendungsfall
+- Use Case
 - Pilot
 - Reifegrad
 - KI-Strategie
-- Unterstützung oder Automatisierung
-- Mensch prüft
+- Augmentation
+- Human-in-the-Loop
 - KI-Governance
-- Akzeptanz
-- Nutzung messen
+- Change Management
+- Adoption
 - KI-Champion
