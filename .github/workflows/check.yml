@@ -1,0 +1,16 @@
+name: Einträge prüfen
+
+on:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run validate
+      - run: npm run generate && git diff --exit-code README.md || (echo "README.md ist nicht aktuell. Bitte 'npm run generate' ausführen." && exit 1)
