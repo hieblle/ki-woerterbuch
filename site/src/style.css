@@ -130,20 +130,16 @@ button { font: inherit; color: inherit; }
   position: fixed; left: 20px; bottom: 18px; z-index: 15; pointer-events: none;
   display: grid; gap: 2px;
 }
-.brand-link {
-  pointer-events: auto; text-decoration: none; color: var(--text);
-  display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-size: 15px;
+.brand-link { pointer-events: auto; display: inline-block; line-height: 0; }
+.brand-logo { height: 30px; width: auto; display: block; }
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: block; }
 }
-.brand-dots {
-  width: 22px; height: 14px; display: inline-block;
-  background:
-    radial-gradient(circle at 3px 3px, var(--primary) 2.6px, transparent 3px),
-    radial-gradient(circle at 11px 7px, var(--primary) 2.6px, transparent 3px),
-    radial-gradient(circle at 19px 11px, var(--primary) 2.6px, transparent 3px),
-    radial-gradient(circle at 3px 11px, var(--primary) 2.6px, transparent 3px),
-    radial-gradient(circle at 19px 3px, var(--primary) 2.6px, transparent 3px);
-}
-.brand-title { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
+.brand-title { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; margin-top: 6px; }
 
 .legend {
   position: fixed; right: 16px; bottom: 18px; z-index: 15;
