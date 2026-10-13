@@ -1,25 +1,15 @@
 import "./style.css";
 import ForceGraph3D from "3d-force-graph";
 import SpriteText from "three-spritetext";
-import { Vector3 } from "three";
+import { CanvasTexture, Color, Fog, Group, Sprite, SpriteMaterial, Vector3 } from "three";
 import data from "./generated/dictionary.json";
 
 type Node = (typeof data.nodes)[number] & { x?: number; y?: number; z?: number; degree: number };
 type Link = { source: string | Node; target: string | Node };
+type NodeObj = { node: Node; disc: Sprite; ring: Sprite; label: SpriteText };
 
 const REPO_URL = "https://github.com/dbrains-academy/ki-woerterbuch";
 const README_URL = `${REPO_URL}#`;
-
-const CHAPTER_COLORS: Record<number, string> = {
-  1: "#7f3ffa",
-  2: "#3ddca8",
-  3: "#2d9cdb",
-  4: "#f2994a",
-  5: "#e056a0",
-  6: "#f64d3f",
-  7: "#d4a017",
-  8: "#5b6cff",
-};
 
 const nodes: Node[] = data.nodes.map((n) => ({ ...n, degree: 0 }));
 const byId = new Map(nodes.map((n) => [n.id, n]));
@@ -35,7 +25,9 @@ for (const l of links) {
   neighbors.get(s)!.add(t);
   neighbors.get(t)!.add(s);
 }
+const maxDegree = Math.max(...nodes.map((n) => n.degree));
 const chapterTitle = (n: number) => data.chapters.find((c) => c.number === n)?.title ?? "";
+const linkId = (end: string | Node) => (typeof end === "string" ? end : end.id);
 
 // ---------- Theme ----------
 const root = document.documentElement;
@@ -44,15 +36,19 @@ function currentTheme(): "light" | "dark" {
   if (forced === "dark" || forced === "light") return forced;
   return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
-function themeColors() {
+function palette() {
   const dark = currentTheme() === "dark";
   return {
-    bg: dark ? "#191525" : "#f8f7fc",
-    label: dark ? "#e5e1fa" : "#211740",
-    labelDim: dark ? "rgba(229,225,250,0.25)" : "rgba(33,23,64,0.25)",
-    link: dark ? "rgba(166,159,230,0.22)" : "rgba(33,23,64,0.16)",
-    linkHi: dark ? "rgba(255,255,255,0.85)" : "rgba(127,63,250,0.9)",
-    nodeDim: dark ? "#3a3357" : "#d9d4ee",
+    bg: dark ? "#191525" : "#f1f0f6",
+    nodeLow: new Color(dark ? "#3d3759" : "#d3cfe3"),
+    nodeHigh: new Color(dark ? "#f3f0fd" : "#1a1233"),
+    label: dark ? "#cfc9ea" : "#4d466c",
+    labelStrong: dark ? "#f8f7fc" : "#211740",
+    accent: dark ? "#a77dff" : "#7f3ffa",
+    linkIdle: dark ? "rgba(166,159,230,0.06)" : "rgba(33,23,64,0.045)",
+    linkActive: dark ? "rgba(167,125,255,0.75)" : "rgba(127,63,250,0.6)",
+    fogNear: 260,
+    fogFar: 760,
   };
 }
 
@@ -60,115 +56,165 @@ function themeColors() {
 let selected: Node | null = null;
 let hovered: Node | null = null;
 let chapterFilter: number | null = null;
+const objects = new Map<string, NodeObj>();
 
-function isActive(n: Node): boolean {
-  if (chapterFilter !== null && n.chapter !== chapterFilter) return false;
-  const focus = selected ?? hovered;
-  if (!focus) return true;
-  return n.id === focus.id || neighbors.get(focus.id)?.has(n.id) === true;
+function inFilter(n: Node) {
+  return chapterFilter === null || n.chapter === chapterFilter;
 }
 function linkActive(l: Link): boolean {
-  const s = (l.source as Node).id ?? (l.source as string);
-  const t = (l.target as Node).id ?? (l.target as string);
-  const focus = selected ?? hovered;
-  if (chapterFilter !== null) {
-    if (byId.get(s)!.chapter !== chapterFilter && byId.get(t)!.chapter !== chapterFilter) return false;
-  }
-  if (!focus) return true;
-  return s === focus.id || t === focus.id;
+  if (!selected) return false;
+  return linkId(l.source) === selected.id || linkId(l.target) === selected.id;
 }
+
+// ---------- Textures ----------
+function circleTexture(size = 128, ring = false): CanvasTexture {
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const ctx = c.getContext("2d")!;
+  const r = size / 2;
+  ctx.clearRect(0, 0, size, size);
+  if (ring) {
+    ctx.lineWidth = size * 0.045;
+    ctx.strokeStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(r, r, r - ctx.lineWidth, 0, Math.PI * 2);
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(r, r, r - 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  const tex = new CanvasTexture(c);
+  tex.anisotropy = 4;
+  return tex;
+}
+const discTex = circleTexture(256);
+const ringTex = circleTexture(256, true);
+
+const radiusOf = (n: Node) => 2.2 + Math.sqrt(n.degree) * 1.55;
+const toneOf = (n: Node) => {
+  const p = palette();
+  const t = Math.sqrt(n.degree / maxDegree);
+  return p.nodeLow.clone().lerp(p.nodeHigh, t);
+};
 
 // ---------- Graph ----------
 const el = document.getElementById("graph")!;
-const Graph = new ForceGraph3D(el, { controlType: "orbit" })
+const Graph = new ForceGraph3D(el, {
+  controlType: "orbit",
+  rendererConfig: { antialias: true, alpha: false, powerPreference: "high-performance" },
+})
   .graphData({ nodes, links })
-  .backgroundColor(themeColors().bg)
+  .backgroundColor(palette().bg)
   .showNavInfo(false)
-  .nodeVal((n) => 1 + (n as Node).degree * 0.45)
-  .nodeOpacity(0.95)
-  .nodeResolution(16)
-  .nodeColor((n) => {
-    const node = n as Node;
-    const focus = selected ?? hovered;
-    if (!isActive(node)) return themeColors().nodeDim;
-    return CHAPTER_COLORS[node.chapter];
-  })
+  .enableNodeDrag(false)
   .nodeThreeObject((n) => {
     const node = n as Node;
-    const sprite = new SpriteText(node.name.toUpperCase());
-    sprite.material.depthWrite = false;
-    sprite.fontFace = "Montserrat, Open Sans, sans-serif";
-    sprite.fontWeight = "600";
-    sprite.color = isActive(node) ? themeColors().label : themeColors().labelDim;
-    sprite.textHeight = 2 + Math.min(node.degree, 12) * 0.08;
-    const r = Math.cbrt(1 + node.degree * 0.45) * 4;
-    sprite.position.y = r + 3;
-    (sprite as any).__node = node;
-    return sprite;
+    const r = radiusOf(node);
+    const g = new Group();
+    const disc = new Sprite(new SpriteMaterial({ map: discTex, color: toneOf(node), transparent: true, depthWrite: false }));
+    disc.scale.set(r * 2, r * 2, 1);
+    const ring = new Sprite(new SpriteMaterial({ map: ringTex, color: palette().accent, transparent: true, depthWrite: false }));
+    ring.scale.set(r * 2.9, r * 2.9, 1);
+    ring.visible = false;
+    const label = new SpriteText(node.name.toUpperCase());
+    label.material.depthWrite = false;
+    label.fontFace = "Montserrat, Open Sans, sans-serif";
+    label.fontWeight = "600";
+    label.textHeight = 2.5 + (node.degree / maxDegree) * 0.8;
+    label.position.y = r + 2.6;
+    label.color = palette().label;
+    g.add(disc, ring, label);
+    objects.set(node.id, { node, disc, ring, label });
+    return g;
   })
-  .nodeThreeObjectExtend(true)
-  .linkColor((l) => (linkActive(l as Link) ? themeColors().linkHi : themeColors().link))
-  .linkWidth((l) => (linkActive(l as Link) && (selected || hovered) ? 1.2 : 0))
-  .linkOpacity(0.3)
+  .nodeThreeObjectExtend(false)
+  .linkWidth(0)
+  .linkOpacity(1)
+  .linkColor((l) => (linkActive(l as Link) ? palette().linkActive : palette().linkIdle))
+  .linkDirectionalParticles((l) => (linkActive(l as Link) ? 3 : 0))
+  .linkDirectionalParticleWidth(1.4)
+  .linkDirectionalParticleSpeed(0.0045)
+  .linkDirectionalParticleColor(() => palette().accent)
   .onNodeHover((n) => {
     const node = (n as Node | null) ?? null;
     if (hovered === node) return;
     hovered = node;
     el.style.cursor = node ? "pointer" : "grab";
-    refresh();
+    paint();
   })
   .onNodeClick((n) => selectNode(n as Node, true))
   .onBackgroundClick(() => {
     if (selected) closePanel();
   });
 
-Graph.warmupTicks(80).cooldownTime(5000);
-Graph.d3Force("charge")?.strength(-140);
-Graph.d3Force("link")?.distance(() => 34);
-Graph.cameraPosition({ x: 0, y: 0, z: 420 });
+Graph.warmupTicks(100).cooldownTime(4000);
+Graph.d3Force("charge")?.strength(-150);
+Graph.d3Force("link")?.distance(() => 36);
+Graph.cameraPosition({ x: 0, y: 0, z: 400 });
+{
+  const controls = Graph.controls() as any;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.rotateSpeed = 0.6;
+  controls.zoomSpeed = 0.7;
+  controls.minDistance = 60;
+  controls.maxDistance = 900;
+}
+applyFog();
 
-let refreshQueued = false;
-function refresh() {
-  if (refreshQueued) return;
-  refreshQueued = true;
-  requestAnimationFrame(() => {
-    refreshQueued = false;
-    Graph.nodeColor(Graph.nodeColor());
-    Graph.linkColor(Graph.linkColor());
-    Graph.linkWidth(Graph.linkWidth());
-    // update label colors without rebuilding sprites
-    Graph.scene().traverse((obj: any) => {
-      if (obj.__node) obj.color = isActive(obj.__node) ? themeColors().label : themeColors().labelDim;
-    });
-  });
+function applyFog() {
+  const p = palette();
+  Graph.scene().fog = new Fog(p.bg, p.fogNear, p.fogFar);
 }
 
-function fitAll() {
-  Graph.cameraPosition({ x: 0, y: 0, z: 420 }, { x: 0, y: 0, z: 0 }, 800);
+// Updates colors, rings and labels without rebuilding objects.
+function paint() {
+  const p = palette();
+  for (const o of objects.values()) {
+    const n = o.node;
+    const active = inFilter(n);
+    const isSel = selected?.id === n.id;
+    const isHov = hovered?.id === n.id;
+    const isNeighbor = selected ? neighbors.get(selected.id)?.has(n.id) === true : false;
+    (o.disc.material as SpriteMaterial).color.copy(toneOf(n));
+    (o.disc.material as SpriteMaterial).opacity = active ? 1 : 0.12;
+    o.ring.visible = isSel || isHov;
+    (o.ring.material as SpriteMaterial).color.set(p.accent);
+    (o.ring.material as SpriteMaterial).opacity = isSel ? 1 : 0.55;
+    o.label.color = isSel || isHov || isNeighbor ? p.labelStrong : p.label;
+    o.label.material.opacity = active ? 1 : 0.15;
+  }
+  Graph.linkColor(Graph.linkColor());
+  Graph.linkDirectionalParticles(Graph.linkDirectionalParticles());
 }
 
 function focusNode(node: Node) {
   if (node.x === undefined || node.y === undefined || node.z === undefined) return;
-  const isMobile = innerWidth <= 760;
-  const distance = isMobile ? 150 : 110;
-  const nodePos = new Vector3(node.x, node.y, node.z);
-  const hyp = nodePos.length() || 1;
-  const camPos = nodePos.clone().multiplyScalar(1 + distance / hyp);
-  // Shift the view so the node is not hidden behind the panel.
   const cam = Graph.camera() as any;
-  const fov = ((cam.fov ?? 75) * Math.PI) / 180;
-  const worldPerPx = (2 * distance * Math.tan(fov / 2)) / innerHeight;
-  const viewDir = nodePos.clone().sub(camPos).normalize();
+  const controls = Graph.controls() as any;
+  const nodePos = new Vector3(node.x, node.y, node.z);
+  const currentTarget: Vector3 = controls.target.clone();
+  // Keep the viewing direction and roughly the current zoom. Only re-center on the node.
+  const dir = cam.position.clone().sub(currentTarget);
+  const dist = Math.min(Math.max(dir.length(), 170), 320);
+  dir.normalize();
+  const camPos = nodePos.clone().add(dir.clone().multiplyScalar(dist));
+  const viewDir = dir.clone().negate();
   let worldUp = new Vector3(0, 1, 0);
   if (Math.abs(viewDir.dot(worldUp)) > 0.9) worldUp = new Vector3(0, 0, 1);
   const right = viewDir.clone().cross(worldUp).normalize();
   const up = right.clone().cross(viewDir).normalize();
+  const fov = ((cam.fov ?? 75) * Math.PI) / 180;
+  const worldPerPx = (2 * dist * Math.tan(fov / 2)) / innerHeight;
+  const isMobile = innerWidth <= 760;
   const shift = isMobile
-    ? up.clone().multiplyScalar(-0.33 * innerHeight * worldPerPx)
+    ? up.clone().multiplyScalar(-0.3 * innerHeight * worldPerPx)
     : right.clone().multiplyScalar((Math.min(440, innerWidth * 0.5) / 2) * worldPerPx);
   const target = nodePos.clone().add(shift);
   const pos = camPos.clone().add(shift);
-  Graph.cameraPosition({ x: pos.x, y: pos.y, z: pos.z }, { x: target.x, y: target.y, z: target.z }, 900);
+  Graph.cameraPosition({ x: pos.x, y: pos.y, z: pos.z }, { x: target.x, y: target.y, z: target.z }, 800);
 }
 
 // ---------- Panel ----------
@@ -183,7 +229,7 @@ function selectNode(node: Node, pushHistory: boolean) {
   renderPanel(node);
   panel.hidden = false;
   focusNode(node);
-  refresh();
+  paint();
   if (pushHistory) setUrl({ term: node.id });
   hideHint();
 }
@@ -191,7 +237,7 @@ function selectNode(node: Node, pushHistory: boolean) {
 function closePanel() {
   selected = null;
   panel.hidden = true;
-  refresh();
+  paint();
   setUrl({ term: null });
 }
 
@@ -202,8 +248,7 @@ function renderPanel(node: Node) {
   $("p-english").textContent = node.english ?? "";
   $("p-desc").textContent = node.description;
   $("p-html").innerHTML = node.html;
-  const misc = $("p-misc-wrap");
-  misc.hidden = !node.misconception;
+  $("p-misc-wrap").hidden = !node.misconception;
   $("p-misc").textContent = node.misconception ?? "";
 
   const dialog = $("p-dialog");
@@ -218,13 +263,11 @@ function renderPanel(node: Node) {
 
   const linksEl = $("p-links");
   linksEl.innerHTML = "";
-  const related = [...(neighbors.get(node.id) ?? [])]
-    .map((id) => byId.get(id)!)
-    .sort((a, b) => a.index - b.index);
+  const related = [...(neighbors.get(node.id) ?? [])].map((id) => byId.get(id)!).sort((a, b) => a.index - b.index);
   for (const r of related) {
     const chip = document.createElement("button");
     chip.className = "chip";
-    chip.innerHTML = `<span class="dot" style="background:${CHAPTER_COLORS[r.chapter]}"></span>${r.name}`;
+    chip.textContent = r.name;
     chip.addEventListener("click", () => selectNode(r, true));
     linksEl.appendChild(chip);
   }
@@ -321,7 +364,7 @@ function renderResults() {
     const li = document.createElement("li");
     li.setAttribute("role", "option");
     li.setAttribute("aria-selected", String(i === cursor));
-    li.innerHTML = `<span class="r-name"><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${CHAPTER_COLORS[n.chapter]}"></span>${n.name}${n.english ? ` <span class="r-chapter">${n.english}</span>` : ""}</span><span class="r-desc">${n.description}</span>`;
+    li.innerHTML = `<span class="r-name">${n.name}${n.english ? ` <span class="r-chapter">${n.english}</span>` : ""}</span><span class="r-desc">${n.description}</span>`;
     li.addEventListener("mousedown", (e) => {
       e.preventDefault();
       choose(n);
@@ -380,16 +423,16 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ---------- Legend ----------
+// ---------- Legend (chapter filter) ----------
 const legend = $("legend");
 for (const c of data.chapters) {
   const b = document.createElement("button");
   b.setAttribute("aria-pressed", "false");
-  b.innerHTML = `<span class="dot" style="background:${CHAPTER_COLORS[c.number]}"></span>${c.title}`;
+  b.innerHTML = `<span class="num">${c.number}</span>${c.title}`;
   b.addEventListener("click", () => {
     chapterFilter = chapterFilter === c.number ? null : c.number;
     legend.querySelectorAll("button").forEach((x, i) => x.setAttribute("aria-pressed", String(data.chapters[i].number === chapterFilter)));
-    refresh();
+    paint();
   });
   legend.appendChild(b);
 }
@@ -410,8 +453,9 @@ $("btn-theme").addEventListener("click", () => {
 });
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
 function applyTheme() {
-  Graph.backgroundColor(themeColors().bg);
-  refresh();
+  Graph.backgroundColor(palette().bg);
+  applyFog();
+  paint();
 }
 
 let hintHidden = false;
@@ -443,24 +487,21 @@ function readUrl(initial = false) {
     selected = n;
     renderPanel(n);
     panel.hidden = false;
-    refresh();
+    paint();
     if (initial) {
       let done = false;
-      Graph.onEngineStop(() => {
+      const go = () => {
         if (done) return;
         done = true;
         focusNode(n);
-      });
-      setTimeout(() => {
-        if (done) return;
-        done = true;
-        focusNode(n);
-      }, 6500);
+      };
+      Graph.onEngineStop(go);
+      setTimeout(go, 5500);
     } else focusNode(n);
   } else if (!initial) {
     selected = null;
     panel.hidden = true;
-    refresh();
+    paint();
   }
 }
 addEventListener("popstate", () => readUrl(false));
