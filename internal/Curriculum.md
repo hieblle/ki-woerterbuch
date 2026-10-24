@@ -1,3 +1,7 @@
+---
+chapters_en: [Foundations, Working with AI, Tools and Products, Agentic AI, Knowledge and Data, Errors and Risks, Law and Compliance, AI in the Company]
+---
+
 ## Kapitel 1 — Grundlagen
 
 - Künstliche Intelligenz
@@ -57,6 +61,13 @@
 - Sandbox
 - Agent Builder
 - Vibe Coding
+- Harness
+- Handoff
+- Trace
+- Evals
+- Compaction
+- Rate Limit
+- Agent-Identität
 
 ## Kapitel 5 — Wissen und Daten
 

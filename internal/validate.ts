@@ -1,41 +1,69 @@
-import { parseCurriculum, loadEntry, listDictionaryFiles } from "./lib.ts";
+import { LANGS, MARKERS, type Lang, parseCurriculum, loadEntry, listDictionaryFiles, listPacks, allowedTargets, entryExists } from "./lib.ts";
 
-const sections = parseCurriculum();
-const terms = sections.flatMap((s) => s.terms);
-const known = new Set(terms);
 const problems: string[] = [];
-const files = new Set(listDictionaryFiles());
+const requireEnglish = process.argv.includes("--require-en");
 
-for (const t of terms) {
-  if (!files.has(t)) {
-    problems.push(`${t}: Datei fehlt`);
-    continue;
+function check(lang: Lang, pack: string | null) {
+  const label = `${pack ? `Paket ${pack}` : "Haupt"} / ${lang}`;
+  const sections = parseCurriculum(pack);
+  const terms = sections.flatMap((s) => s.terms);
+  const allowed = allowedTargets(pack);
+  const files = new Set(listDictionaryFiles(lang, pack));
+  const markers = MARKERS[lang];
+  let missing = 0;
+
+  for (const t of terms) {
+    if (!files.has(t)) {
+      missing++;
+      if (lang === "de" || requireEnglish) problems.push(`${label}: ${t}: Datei fehlt`);
+      continue;
+    }
+    const e = loadEntry(t, lang, pack);
+    const name = `${label}: ${t}`;
+    if (lang === "en" && !e.title) problems.push(`${name}: title fehlt`);
+    if (!e.description) problems.push(`${name}: description fehlt`);
+    else if (e.description.length > 140) problems.push(`${name}: description zu lang (${e.description.length} Zeichen)`);
+    if (e.wordCount < 180) problems.push(`${name}: zu kurz (${e.wordCount} Wörter)`);
+    if (e.wordCount > 560) problems.push(`${name}: zu lang (${e.wordCount} Wörter)`);
+    if (e.links.length < 2) problems.push(`${name}: weniger als zwei Links`);
+    for (const l of e.links) {
+      if (!allowed.has(l)) problems.push(`${name}: Link auf unbekannten oder nicht erlaubten Begriff "${l}"`);
+      if (l === t) problems.push(`${name}: verlinkt auf sich selbst`);
+    }
+    const dialogueHits = e.body.split(markers.dialogue).length - 1;
+    if (dialogueHits !== 1) problems.push(`${name}: genau ein Block "${markers.dialogue}" nötig (gefunden: ${dialogueHits})`);
+    else {
+      const after = e.body.slice(e.body.indexOf(markers.dialogue));
+      const quotes = after.split("\n").filter((l) => /^>\s*\S/.test(l));
+      if (quotes.length < 2 || quotes.length > 4) problems.push(`${name}: Dialog braucht 2 bis 4 Zeilen (gefunden: ${quotes.length})`);
+    }
+    if (/[—]| – /.test(e.body)) problems.push(`${name}: Gedankenstrich im Text`);
+    if (/^#+\s/m.test(e.body)) problems.push(`${name}: Überschriften sind in Einträgen nicht erlaubt`);
   }
-  const e = loadEntry(t);
-  if (!e.description) problems.push(`${t}: description fehlt`);
-  else if (e.description.length > 140) problems.push(`${t}: description zu lang (${e.description.length} Zeichen)`);
-  if (e.wordCount < 180) problems.push(`${t}: zu kurz (${e.wordCount} Wörter)`);
-  if (e.wordCount > 520) problems.push(`${t}: zu lang (${e.wordCount} Wörter)`);
-  if (e.links.length < 2) problems.push(`${t}: weniger als zwei Links`);
-  for (const l of e.links) {
-    if (!known.has(l)) problems.push(`${t}: Link auf unbekannten Begriff "${l}"`);
-    if (l === t) problems.push(`${t}: verlinkt auf sich selbst`);
-  }
-  const alltag = e.body.match(/_Im Alltag:_/g) ?? [];
-  if (alltag.length !== 1) problems.push(`${t}: genau ein Block "_Im Alltag:_" nötig (gefunden: ${alltag.length})`);
-  else {
-    const after = e.body.slice(e.body.indexOf("_Im Alltag:_"));
-    const quotes = after.split("\n").filter((l) => /^>\s*\S/.test(l));
-    if (quotes.length < 2 || quotes.length > 4) problems.push(`${t}: Dialog braucht 2 bis 4 Zeilen (gefunden: ${quotes.length})`);
-  }
-  if (/[—]| – /.test(e.body)) problems.push(`${t}: Gedankenstrich im Text`);
-  if (/^#+\s/m.test(e.body)) problems.push(`${t}: Überschriften sind in Einträgen nicht erlaubt`);
+  for (const f of files) if (!terms.includes(f)) problems.push(`${label}: ${f}: Datei ohne Curriculum-Eintrag`);
+  return { count: terms.length, missing };
 }
-for (const f of files) if (!known.has(f)) problems.push(`${f}: Datei ohne Curriculum-Eintrag`);
+
+const summary: string[] = [];
+const packs = listPacks();
+for (const lang of LANGS) {
+  for (const pack of [null, ...packs.map((p) => p.id)]) {
+    const { count, missing } = check(lang, pack);
+    summary.push(`${pack ?? "Haupt"}/${lang}: ${count - missing}/${count}`);
+  }
+}
+// Every pack term must not collide with a main term.
+const mainTerms = new Set(parseCurriculum(null).flatMap((s) => s.terms));
+for (const p of packs) {
+  for (const t of parseCurriculum(p.id).flatMap((s) => s.terms)) {
+    if (mainTerms.has(t)) problems.push(`Paket ${p.id}: "${t}" existiert bereits im Hauptwörterbuch`);
+    if (!entryExists(t, "de", p.id) && entryExists(t, "de", null)) problems.push(`Paket ${p.id}: "${t}" liegt im falschen Ordner`);
+  }
+}
 
 if (problems.length) {
   console.error(problems.map((p) => `  - ${p}`).join("\n"));
   console.error(`\n${problems.length} Problem(e).`);
   process.exit(1);
 }
-console.log(`Alle ${terms.length} Einträge in Ordnung.`);
+console.log(`Alle Einträge in Ordnung (${summary.join(", ")}).`);

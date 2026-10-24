@@ -55,3 +55,31 @@ _Im Alltag:_
 - Rechtliche Aussagen vorsichtig formulieren („in der Regel“, „prüfen lassen“), keine Rechtsberatung.
 - Wo ein Begriff ein Symptom hat (Halluzination, Kontextverlust), das Symptom beschreiben:
   Woran merke ich es, was tue ich dann.
+
+## Erweiterungen (Pakete)
+
+Produktspezifische Begriffe liegen in Paketen, zum Beispiel `dictionary/packs/copilot/`. Jedes Paket hat ein
+Curriculum unter `internal/packs/<paket>.md` mit Frontmatter (`title_de`, `title_en`, `stand_de`, `stand_en`,
+`description_de`, `description_en`, optional `chapters_en`) und denselben Kapitelzeilen wie das Hauptcurriculum.
+
+- Paketeinträge dürfen auf Begriffe des Hauptwörterbuchs und des eigenen Pakets verlinken.
+- Einträge des Hauptwörterbuchs verlinken nie auf Paketbegriffe. Das Hauptwörterbuch bleibt ohne Paket vollständig.
+- Ein Paketbegriff darf nicht denselben Namen haben wie ein Hauptbegriff. Produktspezifische Varianten bekommen
+  den Produktnamen in den Begriff (z. B. „Grounding in Copilot“ statt „Grounding“).
+- Produktfakten mit Quelle aus der Herstellerdokumentation absichern. Keine Preise, aber Lizenz- und
+  Abrechnungsmechanik darf beschrieben werden. Frühere Produktnamen als Aliase aufnehmen.
+- Im Text den Stand nennen, wenn eine Funktion neu ist oder sich gerade ändert („Stand Oktober 2026“).
+
+## Englische Fassung
+
+Jeder Eintrag hat eine englische Fassung unter `dictionary-en/` mit demselben relativen Pfad und demselben
+Dateinamen (deutscher Begriff als Schlüssel). Beispiel: `dictionary/Kontextfenster.md` und
+`dictionary-en/Kontextfenster.md`.
+
+- Frontmatter: `title` (englischer Anzeigename, Pflicht), `description` (höchstens 140 Zeichen), `aliases`.
+  Kein Feld `english`.
+- Links behalten den deutschen Dateinamen als Ziel: `[context window](./Kontextfenster.md)`.
+- Marker heißen `_Common misconception:_` und `_In practice:_`. Dialogzeilen mit englischen Anführungszeichen “…”.
+- Anrede „you“, gleicher Ton wie im Deutschen: einfach, konkret, keine Superlative, keine Gedankenstriche.
+- Keine wörtliche Übersetzung, sondern eine Fassung, die ein englischsprachiger Leser natürlich findet.
+  Beispiele und Produkte bleiben dieselben.

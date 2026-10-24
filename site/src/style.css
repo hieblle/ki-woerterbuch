@@ -251,3 +251,45 @@ button { font: inherit; color: inherit; }
   .search { width: calc(100vw - 140px); }
   .search-kbd { display: none; }
 }
+
+/* ---- Language switch, extensions ---- */
+.lang {
+  display: inline-flex; height: 44px; padding: 4px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--bg-elev); box-shadow: 0 2px 10px rgba(33, 23, 64, 0.08);
+}
+.lang-btn {
+  border: 0; background: transparent; border-radius: 999px; padding: 0 12px; cursor: pointer;
+  font-family: var(--font-head); font-weight: 600; font-size: 12px; letter-spacing: 0.08em; color: var(--text-muted);
+}
+.lang-btn[aria-pressed="true"] { background: var(--primary); color: #fff; }
+.ext-wrap { position: relative; }
+.ext-badge {
+  position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px; background: var(--primary); color: #fff; font-size: 11px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+}
+.ext-badge[hidden] { display: none; }
+.ext-pop {
+  position: absolute; right: 0; top: 52px; width: min(340px, calc(100vw - 32px)); padding: 14px 16px 10px;
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); z-index: 25;
+}
+.ext-pop[hidden] { display: none; }
+.ext-pop .eyebrow { margin-top: 0; }
+.ext-item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0 10px; border-top: 1px solid var(--border); cursor: pointer; }
+.ext-item:first-of-type { border-top: 0; }
+.ext-item input { margin-top: 3px; accent-color: var(--primary); width: 16px; height: 16px; }
+.ext-item strong { display: block; font-size: 14px; }
+.ext-item span { display: block; font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
+.ext-item .stand { font-size: 11px; margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+.p-pack {
+  display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; padding: 4px 10px; border-radius: 999px;
+  background: var(--primary-soft); color: var(--primary); font-size: 12px; font-weight: 600;
+}
+.p-pack[hidden] { display: none; }
+.search-results .r-hint { color: var(--primary); font-size: 13px; }
+@media (max-width: 760px) {
+  .lang { height: 40px; }
+  .lang-btn { padding: 0 9px; }
+  .topbar-right { gap: 6px; }
+  .search { width: calc(100vw - 230px); }
+}

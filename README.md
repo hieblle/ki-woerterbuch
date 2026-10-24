@@ -1,4 +1,4 @@
-<!-- Diese Datei wird generiert. Änderungen bitte in internal/README.template.md oder dictionary/ vornehmen. -->
+<!-- Diese Datei wird generiert. Änderungen bitte in internal/templates/ oder dictionary/ vornehmen. -->
 
 # KI-Wörterbuch für den Arbeitsalltag
 
@@ -8,7 +8,7 @@ KI-Werkzeuge wie ChatGPT oder Microsoft 365 Copilot sind in vielen Unternehmen a
 
 Dieses Wörterbuch erklärt die Begriffe, die du im Arbeitsalltag wirklich brauchst. In einfacher Sprache, mit Beispielen aus dem Büro, ohne Technikjargon. Jeder Eintrag endet mit einem kurzen Dialog, der zeigt, wie der Begriff im Gespräch verwendet wird.
 
-Die Begriffe sind untereinander verlinkt. Wer lieber visuell lernt: Die [Graph-Ansicht](https://hieblle.github.io/ki-woerterbuch/) zeigt alle Begriffe als Netz.
+Die Begriffe sind untereinander verlinkt. Wer lieber visuell lernt: Die [Graph-Ansicht](https://hieblle.github.io/ki-woerterbuch/) zeigt alle Begriffe als Netz. Erweiterungen wie [Microsoft Copilot](README-copilot.md) ergänzen produktspezifische Begriffe. [English version](README.en.md).
 
 Begleitmaterial zu den KI-Workshops von dbrains academy. Fragen, Korrekturen und Vorschläge gern als Issue oder Pull Request.
 
@@ -68,7 +68,7 @@ Begleitmaterial zu den KI-Workshops von dbrains academy. Fragen, Korrekturen und
 </details>
 
 <details>
-<summary><strong>Kapitel 4: Agentic AI</strong> (15 Begriffe)</summary>
+<summary><strong>Kapitel 4: Agentic AI</strong> (22 Begriffe)</summary>
 
 - [Agentic AI](#agentic-ai)
 - [Agent](#agent)
@@ -85,6 +85,13 @@ Begleitmaterial zu den KI-Workshops von dbrains academy. Fragen, Korrekturen und
 - [Sandbox](#sandbox)
 - [Agent Builder](#agent-builder)
 - [Vibe Coding](#vibe-coding)
+- [Harness](#harness)
+- [Handoff](#handoff)
+- [Trace](#trace)
+- [Evals](#evals)
+- [Compaction](#compaction)
+- [Rate Limit](#rate-limit)
+- [Agent-Identität](#agent-identität)
 
 </details>
 
@@ -1180,6 +1187,158 @@ _Im Alltag:_
 > „Ich habe mir mit Claude Code ein Skript gebaut, das die Monatsauswertung aus fünf Excel-Dateien zusammenfasst. Soll ich das dem ganzen Team geben?“
 >
 > „Für dich selbst super. Wenn das Team damit arbeiten soll, zeig es der IT. Die muss wissen, dass es existiert, und jemand muss es pflegen, wenn sich das Format ändert.“
+
+### Harness
+
+Englisch: *Harness*
+
+Ein Harness ist die Software um das Sprachmodell herum, die aus dem Modell einen [Agenten](#agent) macht. Das Modell selbst kann nur Text lesen und Text schreiben. Alles andere, was ein Agent braucht, liefert der Harness: den Systemprompt, die Werkzeuge, die Verwaltung des Kontexts, die Freigaben und die Schleife, die das Ganze am Laufen hält.
+
+Du kannst dir das wie das Verhältnis zwischen einer Fachkraft und ihrem Arbeitsplatz vorstellen. Das [Sprachmodell](#sprachmodell) ist die Fachkraft, die denkt und formuliert. Der Harness ist der Arbeitsplatz: die Stellenbeschreibung ([Systemprompt](#systemprompt)), der Zugang zu Programmen und Daten ([Tool Use](#tool-use)), die Regel, wann vor einer Aktion eine [Freigabe](#freigabe) nötig ist, und der Ablauf, der nach jedem Schritt entscheidet, was als Nächstes passiert. Der Harness ruft das Modell auf, führt aus, was das Modell vorschlägt, und zeigt dem Modell das Ergebnis. Dann geht es von vorn los, bis die Aufgabe erledigt ist.
+
+Das erklärt, warum dasselbe Modell in verschiedenen Produkten unterschiedlich gut arbeitet. Claude im Chat, Claude in einem Agenten-Werkzeug und ein Copilot Agent können auf demselben Modell laufen und sich trotzdem anders verhalten, weil der Harness andere Werkzeuge, andere Anweisungen und andere Grenzen setzt. Wer einen Agenten verbessern will, dreht meist am Harness und nicht am Modell: bessere Anweisungen, passendere Werkzeuge, strengere Freigaben.
+
+Im Alltag begegnet dir der Begriff zunehmend direkt in der Oberfläche. In Copilot Studio wählst du beim Erstellen eines Agenten einen Harness aus, etwa einen für Kundengespräche oder einen allgemeinen (Stand Oktober 2026). Damit legst du fest, welche Grundausstattung dein Agent bekommt, bevor du eigene Anweisungen und Wissensquellen ergänzt. Das Modell dahinter bleibt dasselbe. Auch [Compaction](#compaction), also das Zusammenfassen des Verlaufs, wenn das Kontextfenster voll wird, übernimmt der Harness und nicht das Modell.
+
+_Typischer Irrtum:_ Wenn ein Agent schlecht arbeitet, liegt es selten am Modell. Meist fehlen im Harness die richtigen Werkzeuge oder klare Anweisungen.
+
+_Im Alltag:_
+
+> „In Copilot Studio soll ich einen Harness auswählen. Was ist das?“
+>
+> „Die Grundausstattung um das Modell herum: Werkzeuge, Regeln, Freigaben. Du wählst damit, was für einen Arbeitsplatz dein Agent bekommt. Das Modell ist bei allen dasselbe.“
+
+### Handoff
+
+Englisch: *Handoff*
+
+Ein Handoff (Übergabe) ist der Moment, in dem ein [Agent](#agent) eine Aufgabe oder ein Gespräch weitergibt: an einen anderen Agenten, der auf diesen Teil spezialisiert ist, oder an einen Menschen, wenn der Agent nicht weiterkommt oder nicht entscheiden darf. Mit übergeben wird der bisherige [Kontext](#kontext), also was die Person wollte, was schon geklärt ist und was noch offen ist.
+
+Die Übergabe an einen Menschen heißt oft Eskalation. Ein Support-Agent beantwortet Fragen zur Rechnung, erkennt aber eine Beschwerde über einen Mitarbeiter und reicht das Gespräch an eine Kollegin weiter. Gut gemacht sieht die Kollegin den bisherigen Verlauf und eine kurze Zusammenfassung und muss nicht von vorn beginnen. Schlecht gemacht fängt der Kunde zum dritten Mal an, sein Anliegen zu erklären. In Copilot Studio legst du für einen Agenten fest, auf welchem Weg er an eine Person übergibt und wann, etwa bei bestimmten Stichworten, nach zwei erfolglosen Versuchen oder auf Wunsch des Kunden.
+
+Die Übergabe an einen anderen Agenten ist das Grundprinzip vieler Systeme mit mehreren Agenten. Ein Agent für den Erstkontakt klärt, worum es geht, und reicht dann an den Agenten für Reisekosten, für IT-Störungen oder für Vertragsfragen weiter. Der Unterschied zum [Multi-Agent-System](#multi-agent-system) mit zentraler Steuerung: Dort behält ein Orchestrator die Kontrolle und sammelt die Ergebnisse ein. Beim Handoff wechselt die Kontrolle. Der neue Agent führt das Gespräch weiter, der alte ist raus.
+
+Vom Handoff zu unterscheiden ist die [Freigabe](#freigabe). Bei der Freigabe fragt der Agent dich kurz und macht dann selbst weiter. Beim Handoff gibt er die Aufgabe ab. Beides sind Formen von [Human-in-the-Loop](#human-in-the-loop), aber mit unterschiedlicher Rolle für dich: einmal bestätigst du, einmal übernimmst du.
+
+Für dich zählt vor allem, was bei einer Übergabe ankommt. Prüfe bei einem Agenten, der an dein Team eskaliert, ob der Kontext vollständig mitkommt und ob der Kunde erfährt, dass jetzt ein Mensch übernimmt. Und lege fest, wer zuständig ist, wenn der Agent übergibt und gerade niemand da ist.
+
+_Typischer Irrtum:_ Ein Handoff ist kein Scheitern des Agenten. Ein Agent, der im richtigen Moment abgibt, ist besser als einer, der jede Frage selbst beantwortet.
+
+_Im Alltag:_
+
+> „Der Support-Agent hat mir das Gespräch zugeschoben, aber ich sehe nur die letzte Nachricht des Kunden.“
+>
+> „Dann fehlt beim Handoff die Zusammenfassung. Das lässt sich im Agenten einstellen, damit du beim Übernehmen den ganzen Verlauf siehst.“
+
+### Trace
+
+Englisch: *Trace*
+
+Ein Trace ist das Protokoll der Schritte, die ein [Agent](#agent) auf dem Weg zu seinem Ergebnis gemacht hat: welche Werkzeuge er mit welchen Angaben aufgerufen hat, was zurückkam, wie er das bewertet hat und was er daraufhin als Nächstes tat. Beim Chat prüfst du eine Antwort. Beim Agenten prüfst du mit dem Trace auch den Weg dorthin.
+
+Im Alltag siehst du Traces meist als aufklappbare Zwischenschritte. Microsoft 365 Copilot zeigt „Durchsucht SharePoint“ oder „Liest Datei“, ChatGPT Agent und Claude zeigen, welche Seite sie geöffnet und welchen Befehl sie ausgeführt haben. In Copilot Studio heißt die ausführliche Ansicht Activity Map: Dort siehst du pro Lauf, welche Wissensquelle der Agent befragt hat, welche Aktion er ausgelöst hat und an welcher Stelle er abgebrochen ist.
+
+Der Trace hilft dir in drei Situationen. Erstens beim Prüfen eines Ergebnisses: Hat der Agent wirklich die aktuelle Preisliste gelesen oder eine Version von vor zwei Jahren? Beim [Tool Use](#tool-use) steht im Trace genau, welche Datei geöffnet wurde. Zweitens bei der Fehlersuche: Liefert ein Agent regelmäßig falsche Zahlen, zeigt der Trace, ob er die falsche Quelle nimmt, die richtige falsch liest oder richtig liest und falsch rechnet. Jeder dieser Fälle braucht eine andere Korrektur. Drittens bei der Sicherheit: Bei einer [Prompt Injection](#prompt-injection) tut der Agent plötzlich etwas, das nicht im Auftrag stand, etwa eine Mail an eine fremde Adresse senden. Im Trace fällt so ein Schritt auf, im Endergebnis oft nicht.
+
+Für Unternehmen ist der Trace außerdem Teil der [KI-Governance](#ki-governance). Wer im Nachhinein erklären muss, warum ein Agent eine Bestellung ausgelöst oder einen Antrag abgelehnt hat, braucht das Protokoll. Für bestimmte Anwendungen verlangt der [EU AI Act](#eu-ai-act) eine solche Aufzeichnung ausdrücklich. Kläre deshalb, wie lange Traces aufbewahrt werden und wer sie einsehen darf, denn sie enthalten oft dieselben vertraulichen Daten wie die Aufgabe selbst.
+
+Du musst nicht jeden Trace lesen. Aber wenn ein Ergebnis überrascht, ist er der erste Ort, an dem du nachsiehst.
+
+_Typischer Irrtum:_ Ein Trace zeigt, was der Agent getan hat, nicht, ob es richtig war. Das Prüfen bleibt bei dir.
+
+_Im Alltag:_
+
+> „Der Agent sagt, der Liefertermin ist der 12. März. Woher hat er das?“
+>
+> „Klapp die Schritte auf. Im Trace steht, welche Datei er gelesen hat. Wenn es die alte Auftragsliste ist, weißt du, wo der Fehler liegt.“
+
+### Evals
+
+Englisch: *Evals*
+
+Evals (kurz für Evaluations) sind systematische Tests für einen [Agenten](#agent) oder einen Prompt. Du stellst eine feste Sammlung von Beispielaufgaben zusammen, legst fest, wie eine gute Antwort aussieht, und lässt den Agenten alle Aufgaben durchlaufen. Das Ergebnis ist eine Zahl: Wie viele der 50 Testfälle hat er richtig gelöst? Diesen Durchlauf wiederholst du vor und nach jeder Änderung.
+
+Ohne Evals bleibt Qualitätsprüfung beim Gefühl: „Hab ich dreimal ausprobiert, ging.“ Das reicht wegen des [Nicht-Determinismus](#nicht-determinismus) nicht. Dieselbe Aufgabe kann beim vierten Mal anders ausgehen, und drei Versuche sagen wenig darüber, wie der Agent bei 500 echten Anfragen im Monat abschneidet. Ein Testset mit 30 bis 100 typischen Fällen, darunter bewusst schwierige und Grenzfälle, zeigt das deutlich klarer.
+
+Ein Beispiel aus HR: Ein Agent beantwortet Fragen zur Reisekostenrichtlinie. Das Testset enthält 40 echte Fragen aus dem Postfach, mit der jeweils richtigen Antwort aus der Richtlinie. Dazu fünf Fragen, auf die die Richtlinie keine Antwort gibt, bei denen der Agent sagen soll, dass er es nicht weiß, statt zu raten ([Halluzination](#halluzination)). Nach jeder Änderung an den Anweisungen oder Wissensquellen läuft das Testset durch. Wird die Trefferquote schlechter, hat die Änderung geschadet, auch wenn sie sich beim Ausprobieren gut angefühlt hat.
+
+Die Bewertung übernimmt entweder ein Mensch, der die Antworten durchsieht, oder ein zweites Modell, das anhand von Kriterien prüft. Letzteres ist schneller, braucht aber Stichproben durch Menschen, damit der Prüfer nicht dieselben Fehler macht wie der Geprüfte. Copilot Studio bietet dafür Agent Evaluations an: Du lädst ein Testset hoch, wählst Bewertungskriterien und bekommst eine Auswertung je Durchlauf. Ähnliche Funktionen gibt es auf den Entwicklerplattformen von OpenAI, Anthropic und Google.
+
+Evals sind der Schritt, an dem viele [Pilot](#pilot)-Projekte scheitern oder nicht in den Regelbetrieb kommen. Beim [Iterieren](#iterieren) an einem Agenten zeigen sie, ob eine Änderung wirklich eine Verbesserung ist. Das Testset baut idealerweise, wer die Aufgabe kennt: echte Fälle sammeln, richtige Antworten festhalten und das Set pflegen, wenn sich die Richtlinie ändert.
+
+_Typischer Irrtum:_ Evals sind kein einmaliger Abnahmetest. Sie laufen bei jeder Änderung erneut, sonst merkt niemand, wenn der Agent schleichend schlechter wird.
+
+_Im Alltag:_
+
+> „Wir haben die Anweisungen vom Reisekosten-Agenten umgeschrieben. Fühlt sich besser an.“
+>
+> „Lass das Testset durchlaufen, bevor es live geht. Letztes Mal hat sich eine Änderung auch gut angefühlt, und die Trefferquote ist von 90 auf 70 Prozent gefallen.“
+
+### Compaction
+
+Englisch: *Compaction*
+
+Compaction bedeutet, dass der [Harness](#harness) den bisherigen Verlauf eines Agenten zusammenfasst, wenn das [Kontextfenster](#kontextfenster) voll wird. Der [Agent](#agent) arbeitet danach mit der Kurzfassung weiter statt mit dem vollständigen Verlauf. Das passiert oft mitten in der Aufgabe und ohne dass du es ausgelöst hast.
+
+Der Grund: Ein Agent läuft länger als ein Chat. Jeder Werkzeugaufruf, jede gelesene Datei und jedes Zwischenergebnis landet im Kontext. Bei einer Aufgabe mit 40 Schritten ist das Fenster irgendwann voll. Statt abzubrechen, lässt der Harness das Modell den Verlauf zusammenfassen: Was war die Aufgabe, was ist erledigt, was ist offen. Die Zusammenfassung ersetzt den alten Verlauf, und es ist wieder Platz. Manche Produkte zeigen das an, etwa Claude mit einem kurzen Hinweis, dass der Verlauf komprimiert wurde. Andere machen es still im Hintergrund.
+
+Bei jeder Zusammenfassung gehen Details verloren. Eine Vorgabe aus deiner zweiten Nachricht, etwa „alle Beträge in Euro ohne Nachkommastellen“, überlebt die Kurzfassung vielleicht nicht. Das Symptom kennst du vom [Kontextverlust](#kontextverlust): Der Agent ändert plötzlich das Format, wechselt die Anrede, stellt eine Frage, die längst beantwortet war, oder beginnt einen erledigten Schritt von vorn. Der Unterschied: Beim Kontextverlust im Chat ist das lange Gespräch selbst die Ursache. Bei Compaction entscheidet der Harness, und du siehst den Verlauf noch vollständig, obwohl der Agent nur noch die Kurzfassung kennt.
+
+Was du dagegen tust: Lege wichtige Vorgaben dort ab, wo sie die Zusammenfassung überleben. Das ist eine Datei, die der Agent erneut lesen kann, das [Memory](#memory) oder die Anweisungen des Agenten selbst, nicht eine Nachricht im Verlauf. Schneide große Aufgaben in kleinere Läufe, jeder mit frischem Kontext und klarem Ziel. Wenn du merkst, dass ein Lauf lang wird, lass den Agenten den Stand in eine Datei schreiben und starte bewusst neu, statt auf die automatische Zusammenfassung zu warten. Und prüfe nach einem langen Lauf das Ergebnis gezielt auf die Vorgaben vom Anfang.
+
+_Typischer Irrtum:_ Compaction ist kein Fehler, sondern eine Notlösung, damit der Agent überhaupt weiterarbeiten kann. Das Problem ist nicht, dass sie passiert, sondern dass Vorgaben nur im Verlauf standen.
+
+_Im Alltag:_
+
+> „Der Agent hat die ersten zwanzig Rechnungen sauber in Euro gebucht, ab der einundzwanzigsten plötzlich mit Cent-Beträgen und auf Englisch.“
+>
+> „Da war Compaction im Spiel: Der Verlauf wurde zusammengefasst und die Formatvorgabe ist rausgefallen. Schreib das Format in die Anweisungen des Agenten, nicht in den Chat.“
+
+### Rate Limit
+
+Englisch: *Rate limit*
+
+Ein Rate Limit (Nutzungslimit) ist eine Obergrenze dafür, wie viel du von einem KI-Dienst in einem bestimmten Zeitraum nutzen darfst: Nachrichten pro Tag, [Token](#token) pro Minute oder Credits pro Monat. Ist die Grenze erreicht, bekommst du eine Meldung wie „Du hast dein Limit erreicht, versuch es in zwei Stunden wieder“, oder der Dienst schaltet auf ein kleineres Modell um.
+
+Was gezählt wird, unterscheidet sich je nach Produkt. ChatGPT und Claude zählen Nachrichten oder Token in einem Zeitfenster, das sich laufend verschiebt. Microsoft 365 Copilot zeigt im Chat selten Grenzen, rechnet aber Agenten aus Copilot Studio und automatische Aktionen über Credits ab, die das Unternehmen einkauft. Welche Grenzen für dich gelten, hängt von der [Business-Lizenz](#business-lizenz) ab, die dein Unternehmen hat. Die Limits von Einzelkonten und Firmenkonten unterscheiden sich oft deutlich.
+
+Mit Agenten wird das Thema wichtiger. Ein [Agent](#agent) stellt nicht eine Anfrage, sondern viele: Jeder Schritt seiner Schleife ist ein eigener Aufruf des Modells, und jede gelesene Datei zählt als Eingabe. Eine Aufgabe, die dir wie eine Frage vorkommt, kann im Hintergrund aus 30 oder 50 Anfragen bestehen. Ein [Multi-Agent-System](#multi-agent-system) vervielfacht das noch einmal. Deshalb erreichst du mit Agenten ein Limit, das dir im Chat nie aufgefallen ist, und deshalb dauert ein Agentenlauf Minuten statt Sekunden.
+
+Du merkst ein Rate Limit daran, dass der Agent mitten in der Aufgabe stehen bleibt, eine Fehlermeldung zeigt oder deutlich langsamer wird. Manche Produkte warten automatisch und machen später weiter, andere brechen ab. Prüfe in diesem Fall, was bis dahin erledigt wurde, bevor du den Lauf neu startest, sonst macht der Agent die ersten Schritte doppelt.
+
+Was du tun kannst: Fasse mehrere kleine Fragen in einen Auftrag zusammen, statt den Agenten zehnmal einzeln loszuschicken. Gib ihm die passenden Dateien direkt mit, statt ihn danach suchen zu lassen, denn jede Suche kostet Anfragen. Plane große Läufe nicht kurz vor einem Termin ein. Und wenn dein Team regelmäßig an Grenzen stößt, ist das ein Hinweis für Einkauf oder IT, dass die Lizenz nicht mehr zur Nutzung passt.
+
+_Typischer Irrtum:_ Ein Rate Limit sagt nichts über die Qualität des Modells. Es ist eine Mengenregel des Anbieters, keine Schwäche der KI.
+
+_Im Alltag:_
+
+> „Der Agent ist bei der Auswertung nach der Hälfte stehen geblieben. Gestern ging das noch.“
+>
+> „Wahrscheinlich das Rate Limit. Der Lauf besteht aus Dutzenden Anfragen, da ist das Kontingent schneller voll als im Chat. Schau, was schon fertig ist, und lass ihn in einer Stunde den Rest machen.“
+
+### Agent-Identität
+
+Englisch: *Agent identity*
+
+Die Agent-Identität beantwortet die Frage, mit wessen Rechten ein [Agent](#agent) handelt: mit deinem Benutzerkonto, mit dem Konto der Person, die ihn gebaut hat, oder mit einem eigenen Konto, das wie das eines Mitarbeitenden verwaltet wird. Davon hängt ab, welche Dateien der Agent lesen, welche Mails er senden und welche Systeme er verändern darf.
+
+Die einfachste Form kennst du vom [Connector](#connector): Der Agent arbeitet mit deinem Konto und sieht genau das, was du siehst. Das ist für persönliche Helfer sinnvoll. Er kann nicht mehr als du, und was er tut, läuft unter deinem Namen.
+
+Schwieriger wird es bei Agenten, die für ein ganzes Team gebaut sind. Läuft ein Agent mit dem Konto seines Erstellers, bekommen alle Nutzer Antworten aus Dokumenten, die der Ersteller öffnen darf, auch wenn sie selbst keinen Zugriff hätten. Ein Agent für Fragen zur Gehaltsrichtlinie, den eine HR-Kollegin gebaut hat, verrät dann unter Umständen Einzelgehälter an jeden, der fragt. Das ist eine häufige Ursache für [Datenabfluss](#datenabfluss) innerhalb des Unternehmens, ohne dass jemand etwas Böses wollte.
+
+Deshalb bekommen Agenten zunehmend ein eigenes Konto mit eigenen, bewusst zugeschnittenen Rechten. Microsoft nennt das Entra Agent ID: Der Agent erscheint im Verzeichnis wie ein Mitarbeitender, mit Verantwortlichem, Rollen und Zugriffsrechten, die sich prüfen und entziehen lassen. In Copilot Studio ist das die Voraussetzung dafür, dass ein Agent selbstständig arbeitet, etwa nachts Anträge vorsortiert, ohne dass gerade ein Mensch angemeldet ist. Ein Agent mit eigenem Konto ist auch im [Trace](#trace) als eigener Akteur erkennbar.
+
+Ein eigenes Konto bringt Pflichten mit. Jemand muss für den Agenten verantwortlich sein, so wie eine Führungskraft für einen Mitarbeitenden. Seine Rechte gehören ins Berechtigungskonzept und in die regelmäßige Prüfung durch die [KI-Governance](#ki-governance). Und es braucht einen Austrittsprozess: Wird der Agent abgeschaltet oder wechselt der Verantwortliche, müssen die Rechte entzogen oder übergeben werden, sonst arbeitet ein vergessenes Konto mit weitreichendem Zugriff weiter.
+
+Für dich heißt das: Frag bei jedem Agenten, den du nutzt oder baust, mit wessen Rechten er läuft. Die Antwort entscheidet, was er sehen kann und wer verantwortlich ist, wenn etwas schiefgeht.
+
+_Typischer Irrtum:_ Ein Agent mit eigenem Konto hat nicht automatisch mehr Rechte. Meist hat er weniger, dafür genau die passenden, und alle wissen, welche.
+
+_Im Alltag:_
+
+> „Unser Richtlinien-Agent hat einem Kollegen den Entwurf für die neue Bonusregelung gezeigt. Der liegt in einem Ordner, auf den nur HR Zugriff hat.“
+>
+> „Dann läuft der Agent mit dem Konto der Person, die ihn gebaut hat. Er braucht eine eigene Identität mit Zugriff nur auf die freigegebenen Richtlinien.“
 
 ## Kapitel 5: Wissen und Daten
 

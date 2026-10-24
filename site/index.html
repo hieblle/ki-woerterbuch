@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>KI-Wörterbuch für den Arbeitsalltag</title>
-    <meta name="description" content="Die wichtigsten KI-Begriffe, verständlich erklärt. Als Netz aus 87 Begriffen, von dbrains academy." />
+    <meta name="description" content="Die wichtigsten KI-Begriffe, verständlich erklärt. Als Netz aus Begriffen, mit Erweiterung für Microsoft Copilot. Von dbrains academy." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +20,7 @@
     <div id="loader" class="loader" aria-hidden="true">
       <div class="loader-inner">
         <p class="loader-eyebrow">dbrains academy</p>
-        <h1 class="loader-title">KI-Wörterbuch<br />für den Arbeitsalltag</h1>
+        <h1 class="loader-title" id="loader-title">KI-Wörterbuch<br />für den Arbeitsalltag</h1>
         <div class="loader-bar"><span id="loader-fill"></span></div>
       </div>
     </div>
@@ -35,10 +35,24 @@
         <ul id="search-results" class="search-results" role="listbox" hidden></ul>
       </div>
       <div class="topbar-right">
+        <div class="lang" role="group" aria-label="Sprache">
+          <button id="lang-de" class="lang-btn" data-lang="de" aria-pressed="true">DE</button>
+          <button id="lang-en" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <div class="ext-wrap">
+          <button id="btn-ext" class="iconbtn" aria-label="Erweiterungen" title="Erweiterungen" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5a1.5 1.5 0 0 1 3 0V5h3a1 1 0 0 1 1 1v3h1.5a1.5 1.5 0 0 1 0 3H17v3a1 1 0 0 1-1 1h-3v1.5a1.5 1.5 0 0 1-3 0V16H7a1 1 0 0 1-1-1v-3H4.5a1.5 1.5 0 0 1 0-3H6V6a1 1 0 0 1 1-1h3V3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span id="ext-badge" class="ext-badge" hidden></span>
+          </button>
+          <div id="ext-pop" class="ext-pop" hidden>
+            <p class="eyebrow" id="ext-title">Erweiterungen</p>
+            <div id="ext-list"></div>
+          </div>
+        </div>
         <button id="btn-theme" class="iconbtn" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="sun" d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6L4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6L4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
         </button>
-        <button id="btn-info" class="iconbtn" aria-label="Über das Wörterbuch" title="Info">
+        <button id="btn-info" class="iconbtn" aria-label="Info" title="Info">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
@@ -49,7 +63,7 @@
         <img class="brand-logo logo-light" src="./logo-light.svg" alt="dbrains academy" width="873" height="228" />
         <img class="brand-logo logo-dark" src="./logo-dark.svg" alt="" width="873" height="228" aria-hidden="true" />
       </a>
-      <div class="brand-title">KI-Wörterbuch für den Arbeitsalltag</div>
+      <div class="brand-title" id="brand-title">KI-Wörterbuch für den Arbeitsalltag</div>
     </div>
 
     <nav class="legend" id="legend" aria-label="Kapitel"></nav>
@@ -62,24 +76,30 @@
         <button id="btn-close" class="iconbtn small" aria-label="Schließen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       </div>
       <div class="panel-body">
+        <p class="p-pack" id="p-pack" hidden></p>
         <h1 id="p-title"></h1>
         <p class="p-english" id="p-english"></p>
         <p class="p-desc" id="p-desc"></p>
         <section>
-          <h2 class="eyebrow">Erklärung</h2>
+          <h2 class="eyebrow" id="l-explain">Erklärung</h2>
           <div class="prose" id="p-html"></div>
         </section>
         <section id="p-misc-wrap">
-          <h2 class="eyebrow">Typischer Irrtum</h2>
+          <h2 class="eyebrow" id="l-misc">Typischer Irrtum</h2>
           <p class="prose" id="p-misc"></p>
         </section>
         <section id="p-dialog-wrap">
-          <h2 class="eyebrow">Im Alltag</h2>
+          <h2 class="eyebrow" id="l-dialog">Im Alltag</h2>
           <div class="dialog" id="p-dialog"></div>
         </section>
         <section id="p-links-wrap">
-          <h2 class="eyebrow">Verbunden mit</h2>
+          <h2 class="eyebrow" id="l-links">Verbunden mit</h2>
           <div class="chips" id="p-links"></div>
+        </section>
+        <section id="p-packlinks-wrap" hidden>
+          <h2 class="eyebrow" id="l-packlinks"></h2>
+          <div class="chips" id="p-packlinks"></div>
+          <button class="btn ghost" id="p-packlinks-enable" hidden></button>
         </section>
         <div class="actions">
           <a id="p-read" class="btn primary" target="_blank" rel="noopener">Im Wörterbuch lesen</a>
@@ -87,8 +107,8 @@
           <button id="p-copy" class="btn">Markdown kopieren</button>
         </div>
         <div class="pager">
-          <button id="p-prev" class="btn ghost">← Vorheriger</button>
-          <button id="p-next" class="btn ghost">Nächster →</button>
+          <button id="p-prev" class="btn ghost"></button>
+          <button id="p-next" class="btn ghost"></button>
         </div>
       </div>
     </aside>
@@ -96,17 +116,15 @@
     <div id="info" class="modal" hidden>
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="info-title">
         <button id="btn-info-close" class="iconbtn small modal-close" aria-label="Schließen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-        <p class="eyebrow">Über</p>
+        <p class="eyebrow" id="info-eyebrow">Über</p>
         <h2 id="info-title">KI-Wörterbuch für den Arbeitsalltag</h2>
-        <p>Prompt, Kontextfenster, Halluzination, Agent: Die Begriffe rund um KI fallen ständig, und oft weiß niemand genau, was sie bedeuten.</p>
-        <p>Dieses Wörterbuch erklärt <span id="info-count"></span> Begriffe in einfacher Sprache, mit Beispielen aus dem Büro. Die Begriffe sind als Netz dargestellt, weil sie zusammenhängen: Klick auf einen Begriff und folge den Verbindungen.</p>
-        <p>Begleitmaterial zu den KI-Workshops von <a href="https://dbrains.academy" target="_blank" rel="noopener">dbrains academy</a>, Linz.</p>
+        <div id="info-body"></div>
         <div class="chips">
           <a class="chip" href="https://dbrains.academy" target="_blank" rel="noopener">dbrains.academy ↗</a>
           <a class="chip" id="info-repo" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
-        <p class="eyebrow" style="margin-top:1.5rem">Lizenz</p>
-        <p class="muted">Inhalte CC BY 4.0, Code MIT. Idee und Aufbau inspiriert vom <a href="https://github.com/mattpocock/dictionary-of-ai-coding" target="_blank" rel="noopener">Dictionary of AI Coding</a> von Matt Pocock.</p>
+        <p class="eyebrow" style="margin-top:1.5rem" id="info-license-label">Lizenz</p>
+        <p class="muted" id="info-license"></p>
       </div>
     </div>
 

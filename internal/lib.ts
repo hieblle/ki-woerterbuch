@@ -2,21 +2,39 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join, basename } from "node:path";
 
 export const ROOT = join(import.meta.dirname, "..");
-export const DICT_DIR = join(ROOT, "dictionary");
-export const CURRICULUM = join(ROOT, "internal", "Curriculum.md");
+export const LANGS = ["de", "en"] as const;
+export type Lang = (typeof LANGS)[number];
 
-export type Section = { number: number; title: string; terms: string[] };
+export type Section = { number: number; title: string; titleEn: string; terms: string[] };
+export type Pack = { id: string; title: Record<Lang, string>; stand: Record<Lang, string>; description: Record<Lang, string> };
 
 export type Entry = {
-  term: string;
+  term: string; // German key, equals the file name in dictionary/
+  title: string; // display name in the requested language
   slug: string;
+  pack: string | null;
   description: string;
   english?: string;
   aliases: string[];
   body: string; // markdown without frontmatter
-  links: string[]; // linked term names (resolved file names)
+  links: string[]; // linked term keys (file names)
   wordCount: number;
 };
+
+// Localized markers inside entries.
+export const MARKERS: Record<Lang, { misconception: string; dialogue: string }> = {
+  de: { misconception: "_Typischer Irrtum:_", dialogue: "_Im Alltag:_" },
+  en: { misconception: "_Common misconception:_", dialogue: "_In practice:_" },
+};
+
+export function dictDir(lang: Lang, pack: string | null = null): string {
+  const base = join(ROOT, lang === "de" ? "dictionary" : "dictionary-en");
+  return pack ? join(base, "packs", pack) : base;
+}
+
+export function curriculumPath(pack: string | null = null): string {
+  return pack ? join(ROOT, "internal", "packs", `${pack}.md`) : join(ROOT, "internal", "Curriculum.md");
+}
 
 export function slugify(term: string): string {
   // GitHub-style heading slugs: lowercase, drop punctuation except hyphens, spaces to hyphens
@@ -27,15 +45,34 @@ export function slugify(term: string): string {
     .replace(/\s+/g, "-");
 }
 
-export function parseCurriculum(): Section[] {
-  const lines = readFileSync(CURRICULUM, "utf8").split("\n");
+export function listPacks(): Pack[] {
+  const dir = join(ROOT, "internal", "packs");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".md"))
+    .map((f) => {
+      const id = basename(f, ".md");
+      const { data } = parseFrontmatter(readFileSync(join(dir, f), "utf8"));
+      const loc = (key: string): Record<Lang, string> => ({
+        de: String(data[`${key}_de`] ?? data[key] ?? ""),
+        en: String(data[`${key}_en`] ?? data[key] ?? ""),
+      });
+      return { id, title: loc("title"), stand: loc("stand"), description: loc("description") };
+    });
+}
+
+export function parseCurriculum(pack: string | null = null): Section[] {
+  const src = readFileSync(curriculumPath(pack), "utf8");
+  const { data, body } = parseFrontmatter(src);
+  const titlesEn: string[] = Array.isArray(data.chapters_en) ? data.chapters_en : [];
   const sections: Section[] = [];
-  for (const raw of lines) {
+  for (const raw of body.split("\n")) {
     const line = raw.trimEnd();
     if (!line.trim()) continue;
     const h = line.match(/^## Kapitel (\d+) — (.+)$/);
     if (h) {
-      sections.push({ number: Number(h[1]), title: h[2].trim(), terms: [] });
+      const title = h[2].trim();
+      sections.push({ number: Number(h[1]), title, titleEn: titlesEn[sections.length] ?? title, terms: [] });
       continue;
     }
     if (line.startsWith("## ")) throw new Error(`Ungültige Kapitelzeile: ${line}`);
@@ -47,7 +84,7 @@ export function parseCurriculum(): Section[] {
       sections[sections.length - 1].terms.push(term);
       continue;
     }
-    throw new Error(`Unerwartete Zeile im Curriculum: ${line}`);
+    throw new Error(`Unerwartete Zeile im Curriculum (${pack ?? "Haupt"}): ${line}`);
   }
   return sections;
 }
@@ -75,9 +112,13 @@ export function parseFrontmatter(src: string): { data: Record<string, any>; body
   return { data, body: src.slice(m[0].length) };
 }
 
-export function loadEntry(term: string): Entry {
-  const file = join(DICT_DIR, `${term}.md`);
-  if (!existsSync(file)) throw new Error(`Eintrag fehlt: dictionary/${term}.md`);
+export function entryExists(term: string, lang: Lang, pack: string | null = null): boolean {
+  return existsSync(join(dictDir(lang, pack), `${term}.md`));
+}
+
+export function loadEntry(term: string, lang: Lang = "de", pack: string | null = null): Entry {
+  const file = join(dictDir(lang, pack), `${term}.md`);
+  if (!existsSync(file)) throw new Error(`Eintrag fehlt: ${file.replace(ROOT + "/", "")}`);
   const src = readFileSync(file, "utf8");
   const { data, body } = parseFrontmatter(src);
   const trimmed = body.trim();
@@ -92,7 +133,9 @@ export function loadEntry(term: string): Entry {
     .filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
   return {
     term,
+    title: data.title ? String(data.title) : term,
     slug: slugify(term),
+    pack,
     description: String(data.description ?? ""),
     english: data.english ? String(data.english) : undefined,
     aliases: Array.isArray(data.aliases) ? data.aliases : [],
@@ -102,8 +145,19 @@ export function loadEntry(term: string): Entry {
   };
 }
 
-export function listDictionaryFiles(): string[] {
-  return readdirSync(DICT_DIR)
-    .filter((f) => f.endsWith(".md"))
-    .map((f) => basename(f, ".md"));
+export function listDictionaryFiles(lang: Lang = "de", pack: string | null = null): string[] {
+  const dir = dictDir(lang, pack);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((d) => d.isFile() && d.name.endsWith(".md"))
+    .map((d) => basename(d.name, ".md"));
+}
+
+/** Link targets allowed from an entry: main terms always, pack terms only from inside the same pack. */
+export const sectionTitle = (s: Section, lang: Lang) => (lang === "en" ? s.titleEn : s.title);
+
+export function allowedTargets(pack: string | null): Set<string> {
+  const main = parseCurriculum(null).flatMap((s) => s.terms);
+  const extra = pack ? parseCurriculum(pack).flatMap((s) => s.terms) : [];
+  return new Set([...main, ...extra]);
 }
